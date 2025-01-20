@@ -35,6 +35,9 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink :href="route('superAdmin')"
+                                    >Super Admin
+                                </NavLink>
                                 <NavLink
                                     :active="route().current('messages')"
                                     :href="route('messages')"

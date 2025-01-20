@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,12 +16,19 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Dashboard', ['users' => User::paginate(10)
+        ]);
     })->name('dashboard');
+
     Route::get('/messages', function () {
         return Inertia::render('Messages');
     })->name('messages');
+
+    Route::get('/super', function () {
+        return Inertia::render('Messages');
+    })->middleware('IsSuper')->name('superAdmin');
 });
 
 Route::middleware('auth')->group(function () {

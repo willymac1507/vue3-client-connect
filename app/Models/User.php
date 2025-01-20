@@ -63,7 +63,7 @@ class User extends Authenticatable
         return $this->hasMany(Message::class, 'sender_id');
     }
 
-    public function hasRole($role)
+    public function hasRole($role): bool
     {
         if (is_string($role)) {
             return $this->roles->contains('role', $role);
