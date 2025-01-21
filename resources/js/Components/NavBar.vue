@@ -8,10 +8,6 @@ import Dropdown from "@/Components/Dropdown.vue";
 import { ref } from "vue";
 
 const showingNavigationDropdown = ref(false);
-
-defineProps({
-    can: Object,
-});
 </script>
 <template>
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -34,11 +30,15 @@ defineProps({
                         Dashboard
                     </NavLink>
                     <NavLink
-                        v-if="can['superAdmin']"
+                        v-if="$page.props.can['superAdmin']"
+                        :active="route().current('superAdmin')"
                         :href="route('superAdmin')"
                         >Super Admin
                     </NavLink>
-                    <NavLink v-if="can['admin']" :href="route('admin')"
+                    <NavLink
+                        v-if="$page.props.can['admin']"
+                        :active="route().current('admin')"
+                        :href="route('admin')"
                         >Admin
                     </NavLink>
                     <NavLink

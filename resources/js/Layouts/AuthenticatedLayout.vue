@@ -1,16 +1,12 @@
 <script setup>
 import NavBar from "@/Components/NavBar.vue";
-
-defineProps({
-    can: Object,
-});
 </script>
 <template>
     <div>
         <div class="min-h-screen bg-gray-100">
             <nav class="border-b border-gray-100 bg-white">
                 <!-- Primary Navigation Menu -->
-                <NavBar :can="can" />
+                <NavBar />
             </nav>
             <!-- Page Heading -->
             <header v-if="$slots.header" class="bg-white shadow">

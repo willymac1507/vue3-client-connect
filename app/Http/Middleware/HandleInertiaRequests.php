@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -38,6 +39,12 @@ class HandleInertiaRequests extends Middleware
                     'email' => Auth::user()->email
                 ],
             ] : null,
+            'can' => [
+                'admin' => Auth::user()->can('admin', User::class),
+                'superAdmin' => Auth::user()->can('superAdmin', User::class),
+                'check' => true
+            ]
+
         ];
 
     }

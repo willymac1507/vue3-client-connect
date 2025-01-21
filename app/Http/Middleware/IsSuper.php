@@ -17,8 +17,8 @@ class IsSuper extends Middleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::user()->hasRole('superAdmin')) {
-            return redirect('/dashboard');
+        if (!Auth::user()->hasRole('superUser')) {
+            return redirect('/');
         }
         return $next($request);
     }
