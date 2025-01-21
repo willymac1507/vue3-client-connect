@@ -1,24 +1,36 @@
 <!--suppress HtmlRequiredTitleElement -->
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
-import UsersList from "@/Pages/Dashboard/UsersList.vue";
 import PageSection from "@/Components/PageSection.vue";
+import { Head } from "@inertiajs/vue3";
 
-let props = defineProps(["users"]);
+defineProps({
+    can: Object,
+});
 </script>
 <template>
     <Head title="Dashboard" />
-    <AuthenticatedLayout>
-        <template #header>
+    <AuthenticatedLayout :can="can">
+        <template v-slot:header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 Dashboard
             </h2>
         </template>
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <PageSection header="All Users">
-                    <UsersList :users="users" />
+                <PageSection>
+                    <template v-slot:header>
+                        <div class="flex justify-between items-center">
+                            <h3>Calendar</h3>
+                        </div>
+                    </template>
+                </PageSection>
+                <PageSection>
+                    <template v-slot:header>
+                        <div class="flex justify-between items-center">
+                            <h3>Messages</h3>
+                        </div>
+                    </template>
                 </PageSection>
             </div>
         </div>

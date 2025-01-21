@@ -1,34 +1,26 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
-use App\Models\User;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+//Route::get('/', function () {
+//    return Inertia::render('Welcome', [
+//        'canLogin' => Route::has('login'),
+//        'canRegister' => Route::has('register'),
+//        'laravelVersion' => Application::VERSION,
+//        'phpVersion' => PHP_VERSION,
+//    ]);
+//});
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard', ['users' => User::paginate(10)
-        ]);
-    })->name('dashboard');
-
-    Route::get('/messages', function () {
-        return Inertia::render('Messages');
-    })->name('messages');
-
-    Route::get('/super', function () {
-        return Inertia::render('Messages');
-    })->middleware('IsSuper')->name('superAdmin');
+    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages');
+    Route::get('/super', [UserController::class, 'index'])->middleware('can:superAdmin,App\Models\User')->name('superAdmin');
+    Route::get('/admin', [AdminController::class, 'index'])->middleware('can:admin, App\Models\User')->name('admin');
 });
 
 Route::middleware('auth')->group(function () {
