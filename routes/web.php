@@ -6,6 +6,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsSuper;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 });
 
 Route::middleware(['auth', 'verified', IsSuper::class])->group(function () {

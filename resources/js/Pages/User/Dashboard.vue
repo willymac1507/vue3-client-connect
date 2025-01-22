@@ -3,6 +3,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import PageSection from "@/Components/PageSection.vue";
 import { Head } from "@inertiajs/vue3";
+import DashCalendar from "@/Pages/User/DashCalendar.vue";
 
 defineProps({
     can: Object,
@@ -24,6 +25,7 @@ defineProps({
                             <h3>Calendar</h3>
                         </div>
                     </template>
+                    <DashCalendar />
                 </PageSection>
                 <PageSection>
                     <template v-slot:header>
