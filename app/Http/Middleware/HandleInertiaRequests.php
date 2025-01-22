@@ -39,11 +39,11 @@ class HandleInertiaRequests extends Middleware
                     'email' => Auth::user()->email
                 ],
             ] : null,
-            'can' => [
+            'can' => Auth::user() ? [
                 'admin' => Auth::user()->can('admin', User::class),
                 'superAdmin' => Auth::user()->can('superAdmin', User::class),
                 'check' => true
-            ]
+            ] : null
 
         ];
 

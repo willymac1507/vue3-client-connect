@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 
-class HomeController extends Controller
+class SuperController extends Controller
 {
     public function index()
     {
-        return Inertia::render('User/Dashboard');
+        return Inertia::render('SuperAdmin/Dashboard');
     }
 }
