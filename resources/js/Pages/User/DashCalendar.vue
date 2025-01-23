@@ -61,11 +61,7 @@ function selectDay(day) {
     if (!isEqual(this.month, getMonth(day.date))) {
         populateDates(toDate(day.date));
     }
-    console.log(this.days.length);
-    for (let i = 0; i < this.days.length; i++) {
-        this.days[i].isSelected = false;
-    }
-    day.isSelected = true;
+    this.viewedDay = toDate(day.date);
 }
 </script>
 <template>
@@ -109,34 +105,33 @@ function selectDay(day) {
                 >
                     <button
                         :class="[
-                            day.isSelected && 'text-white',
-                            !day.isSelected &&
+                            isEqual(day.date, viewedDay) && 'text-white',
+                            !isEqual(day.date, viewedDay) &&
                                 isToday(day.date) &&
                                 'text-indigo-600',
-                            !day.isSelected &&
+                            !isEqual(day.date, viewedDay) &&
                                 !isToday(day.date) &&
                                 day.isCurrentMonth &&
                                 'text-gray-900',
-                            !day.isSelected &&
+                            !isEqual(day.date, viewedDay) &&
                                 !isToday(day.date) &&
                                 !day.isCurrentMonth &&
                                 'text-gray-400',
-                            day.isSelected &&
+                            isEqual(day.date, viewedDay) &&
                                 isToday(day.date) &&
                                 'bg-indigo-600',
-                            day.isSelected &&
+                            isEqual(day.date, viewedDay) &&
                                 !isToday(day.date) &&
                                 'bg-gray-900',
-                            !day.isSelected && 'hover:bg-gray-200',
-                            (day.isSelected || isToday(day.date)) &&
+                            !isEqual(day.date, viewedDay) &&
+                                'hover:bg-gray-200',
+                            (isEqual(day.date, viewedDay) ||
+                                isToday(day.date)) &&
                                 'font-semibold',
                             'mx-auto flex size-8 items-center justify-center rounded-full',
                         ]"
                         type="button"
-                        @click="
-                            viewedDay = toDate(day.date);
-                            selectDay(day);
-                        "
+                        @click="selectDay(day)"
                     >
                         <time :datetime="day.date"
                             >{{ day.date.split("-").pop().replace(/^0/, "") }}
