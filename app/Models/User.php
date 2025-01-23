@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->hasOne(Calendar::class);
     }
 
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);

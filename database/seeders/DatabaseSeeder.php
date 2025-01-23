@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Booking;
 use App\Models\Calendar;
 use App\Models\Organisation;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -40,8 +42,10 @@ class DatabaseSeeder extends Seeder
             'contact' => 'Will McCloy',
         ]);
 
-        User::factory(30)->has(Calendar::factory())->create([
+        User::factory(30)->has(Booking::factory(5))->create([
             'organisation_id' => null
         ]);
+
+        Role::factory(4)->create();
     }
 }

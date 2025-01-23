@@ -1,6 +1,8 @@
 <script setup>
 import { Head } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+
+defineProps(["startDate", "endDate"]);
 </script>
 <template>
     <Head title="Dashboard" />
@@ -10,6 +12,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
                 Dashboard
             </h2>
         </template>
+        <p>{{ startDate }}</p>
+        <p>{{ endDate }}</p>
     </AuthenticatedLayout>
 </template>
 <style />

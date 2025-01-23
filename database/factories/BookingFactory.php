@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Booking;
+use DateInterval;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Booking>
+ * @extends Factory<Booking>
  */
 class BookingFactory extends Factory
 {
@@ -16,8 +18,12 @@ class BookingFactory extends Factory
      */
     public function definition(): array
     {
+        $startDate = $this->faker->dateTimeThisYear('+2 months');
+        $endDate = $startDate->add(DateInterval::createFromDateString('1 hour'));
         return [
-            //
+            'start' => $startDate,
+            'end' => $endDate,
+            'description' => $this->faker->sentence()
         ];
     }
 }

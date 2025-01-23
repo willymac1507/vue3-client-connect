@@ -3,6 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { EllipsisVerticalIcon } from "@heroicons/vue/24/outline";
 import {
+    addMonths,
     eachDayOfInterval,
     format,
     getDate,
@@ -13,6 +14,8 @@ import {
     nextSunday,
     previousMonday,
     startOfDay,
+    startOfMonth,
+    subMonths,
     toDate,
 } from "date-fns";
 import { ref } from "vue";
@@ -63,6 +66,18 @@ function selectDay(day) {
     }
     this.viewedDay = toDate(day.date);
 }
+
+function previousMonth(day) {
+    let prevMonth = subMonths(day, 1);
+    this.viewedDay = startOfMonth(prevMonth);
+    populateDates(prevMonth);
+}
+
+function nextMonth(day) {
+    let nextMonth = addMonths(day, 1);
+    this.viewedDay = startOfMonth(nextMonth);
+    populateDates(nextMonth);
+}
 </script>
 <template>
     <div class="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
@@ -74,6 +89,7 @@ function selectDay(day) {
                 <button
                     class="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
                     type="button"
+                    @click="previousMonth(viewedDay)"
                 >
                     <span class="sr-only">Previous month</span>
                     <ChevronLeftIcon aria-hidden="true" class="size-5" />
@@ -81,6 +97,7 @@ function selectDay(day) {
                 <button
                     class="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
                     type="button"
+                    @click="nextMonth(viewedDay)"
                 >
                     <span class="sr-only">Next month</span>
                     <ChevronRightIcon aria-hidden="true" class="size-5" />
