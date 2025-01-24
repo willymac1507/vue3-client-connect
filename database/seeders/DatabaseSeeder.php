@@ -46,6 +46,24 @@ class DatabaseSeeder extends Seeder
             'organisation_id' => null
         ]);
 
-        Role::factory(4)->create();
+        Role::factory()->create([
+            'id' => 1,
+            'role' => 'superUser'
+        ]);
+
+        Role::factory()->create([
+            'id' => 2,
+            'role' => 'admin'
+        ]);
+
+        Role::factory()->create([
+            'id' => 3,
+            'role' => 'student'
+        ]);
+
+        Role::factory()->create([
+            'id' => 4,
+            'role' => 'client'
+        ]);
     }
 }

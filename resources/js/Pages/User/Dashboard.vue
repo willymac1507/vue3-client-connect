@@ -7,6 +7,7 @@ import DashCalendar from "@/Pages/User/DashCalendar.vue";
 
 defineProps({
     can: Object,
+    bookings: Object,
 });
 </script>
 <template>
@@ -25,7 +26,7 @@ defineProps({
                             <h3>Calendar</h3>
                         </div>
                     </template>
-                    <DashCalendar />
+                    <DashCalendar :bookings="bookings" />
                 </PageSection>
                 <PageSection>
                     <template v-slot:header>

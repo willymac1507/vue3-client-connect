@@ -20,23 +20,28 @@ import {
 } from "date-fns";
 import { ref } from "vue";
 
+let props = defineProps({
+    bookings: Object,
+});
+
 const viewedDay = ref(startOfDay(new Date()));
 
 let days = ref([]);
-const meetings = [
-    {
-        id: 1,
-        name: "Leslie Alexander",
-        imageUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        start: "1:00 PM",
-        startDatetime: "2025-01-22T13:00",
-        actualDateTime: new Date("2025-01-22"),
-        end: "2:30 PM",
-        endDatetime: "2025-01-22T14:30",
-    },
-    // More meetings...
-];
+const appointments = [];
+
+props.bookings.map((booking) => {
+    let appointment = {
+        id: booking.id,
+        name: booking.client.name,
+        imageUrl: booking.client.profile_picture_path,
+        date: startOfDay(booking.start),
+        startDateTime: booking.start,
+        endDateTime: booking.end,
+        description: booking.description,
+    };
+    appointments.push(appointment);
+});
+
 let formattedDate;
 let todaysDate = ref(new Date());
 populateDates(todaysDate.value);
@@ -55,6 +60,8 @@ function populateDates(date) {
         let dateObject = {
             date: `${getYear(day)}-${getMonth(day) + 1}-${getDate(day)}`,
             isCurrentMonth: isEqual(month, getMonth(day)),
+            hasBooking:
+                appointments.filter((b) => isEqual(b.date, day)).length > 0,
         };
         days.value.push(dateObject);
     });
@@ -122,10 +129,11 @@ function nextMonth(day) {
                 >
                     <button
                         :class="[
+                            day.hasBooking && 'ring-2 ring-cyan-500',
                             isEqual(day.date, viewedDay) && 'text-white',
                             !isEqual(day.date, viewedDay) &&
                                 isToday(day.date) &&
-                                'text-indigo-600',
+                                'text-red-500',
                             !isEqual(day.date, viewedDay) &&
                                 !isToday(day.date) &&
                                 day.isCurrentMonth &&
@@ -162,26 +170,38 @@ function nextMonth(day) {
                 Schedule for {{ format(viewedDay, "E do MMMM yyyy") }}
             </h2>
             <ol class="mt-4 flex flex-col gap-y-1 text-sm/6 text-gray-500">
-                <template v-for="meeting in meetings">
+                <template v-for="appointment in appointments">
                     <li
-                        v-if="isEqual(meeting.actualDateTime, viewedDay)"
-                        :key="meeting.id"
+                        v-if="
+                            isEqual(
+                                startOfDay(appointment.startDateTime),
+                                viewedDay,
+                            )
+                        "
+                        :key="appointment.id"
                         class="group flex items-center gap-x-4 rounded-xl px-4 py-2 focus-within:bg-gray-100 hover:bg-gray-100"
                     >
                         <img
-                            :src="meeting.imageUrl"
+                            :src="appointment.imageUrl"
                             alt=""
                             class="size-10 flex-none rounded-full"
                         />
                         <div class="flex-auto">
-                            <p class="text-gray-900">{{ meeting.name }}</p>
+                            <p class="text-gray-900">{{ appointment.name }}</p>
                             <p class="mt-0.5">
-                                <time :datetime="meeting.startDatetime"
-                                    >{{ meeting.start }}
+                                <time :datetime="appointment.startDatetime"
+                                    >{{
+                                        format(
+                                            appointment.startDateTime,
+                                            "HH:MM",
+                                        )
+                                    }}
                                 </time>
                                 -
-                                <time :datetime="meeting.endDatetime"
-                                    >{{ meeting.end }}
+                                <time :datetime="appointment.endDatetime"
+                                    >{{
+                                        format(appointment.endDateTime, "HH:MM")
+                                    }}
                                 </time>
                             </p>
                         </div>

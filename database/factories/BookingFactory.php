@@ -19,10 +19,12 @@ class BookingFactory extends Factory
     public function definition(): array
     {
         $startDate = $this->faker->dateTimeThisYear('+2 months');
-        $endDate = $startDate->add(DateInterval::createFromDateString('1 hour'));
+        $endDate = clone $startDate;
+        $endDate->add(new DateInterval('PT1H'));
         return [
             'start' => $startDate,
             'end' => $endDate,
+            'student_id' => $this->faker->randomElement([2, 3, 4, 5, 6]),
             'description' => $this->faker->sentence()
         ];
     }

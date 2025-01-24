@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -24,10 +25,13 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $pictures = Storage::json('randomuser.me.json');
+        $profileThumb = $pictures["results"][rand(0, 79)]["picture"]["thumbnail"];
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'profile_picture_path' => $profileThumb,
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
