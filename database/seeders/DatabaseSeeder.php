@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Booking;
 use App\Models\Calendar;
+use App\Models\Conversation;
+use App\Models\Message;
 use App\Models\Organisation;
 use App\Models\Role;
 use App\Models\User;
@@ -65,5 +67,7 @@ class DatabaseSeeder extends Seeder
             'id' => 4,
             'role' => 'client'
         ]);
+
+        Conversation::factory(10)->has(Message::factory(10))->create();
     }
 }

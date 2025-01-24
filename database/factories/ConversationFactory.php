@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Message;
+use App\Models\Conversation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Message>
+ * @extends Factory<Conversation>
  */
-class MessageFactory extends Factory
+class ConversationFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +18,7 @@ class MessageFactory extends Factory
     public function definition(): array
     {
         return [
-            'body' => $this->faker->paragraph(),
-            'sender_id' => $this->faker->randomElement([1, 2]),
-            'recipient_id' => $this->faker->randomElement([1, 2])
+            'subject' => $this->faker->sentence()
         ];
     }
 }

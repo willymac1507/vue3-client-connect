@@ -187,7 +187,11 @@ function nextMonth(day) {
                             class="size-10 flex-none rounded-full"
                         />
                         <div class="flex-auto">
-                            <p class="text-gray-900">{{ appointment.name }}</p>
+                            <p class="text-gray-900">
+                                {{ appointment.name }} ({{
+                                    appointment.description
+                                }})
+                            </p>
                             <p class="mt-0.5">
                                 <time :datetime="appointment.startDatetime"
                                     >{{

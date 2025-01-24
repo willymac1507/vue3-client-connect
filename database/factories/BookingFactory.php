@@ -25,7 +25,7 @@ class BookingFactory extends Factory
             'start' => $startDate,
             'end' => $endDate,
             'student_id' => $this->faker->randomElement([2, 3, 4, 5, 6]),
-            'description' => $this->faker->sentence()
+            'description' => $this->faker->randomElement(['Haircut', 'Colour', 'Perm', 'Beard'])
         ];
     }
 }

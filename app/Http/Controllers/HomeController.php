@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\Bookings;
 use Inertia\Inertia;
 
 class HomeController extends Controller
 {
+    use Bookings;
+
     public function index()
     {
         return Inertia::render('User/Dashboard', [
-            'bookings' => Booking::with('client')->where('student_id', Auth::id())->get()
+            'bookings' => $this->getAllBookings()
         ]);
     }
 }
