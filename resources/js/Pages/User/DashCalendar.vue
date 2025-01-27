@@ -197,14 +197,14 @@ function nextMonth(day) {
                                     >{{
                                         format(
                                             appointment.startDateTime,
-                                            "HH:MM",
+                                            "HH:mm",
                                         )
                                     }}
                                 </time>
                                 -
                                 <time :datetime="appointment.endDatetime"
                                     >{{
-                                        format(appointment.endDateTime, "HH:MM")
+                                        format(appointment.endDateTime, "HH:mm")
                                     }}
                                 </time>
                             </p>

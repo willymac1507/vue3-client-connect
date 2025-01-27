@@ -18,9 +18,12 @@ class MessageFactory extends Factory
     public function definition(): array
     {
         return [
+            'subject' => $this->faker->sentence(5),
             'body' => $this->faker->paragraph(),
-            'sender_id' => $this->faker->randomElement([1, 2]),
-            'recipient_id' => $this->faker->randomElement([1, 2])
+            'sender_id' => $this->faker->numberBetween(2, 81),
+            'recipient_id' => 1,
+            'isRead' => $this->faker->randomElement([0, 1]),
+            'created_at' => $this->faker->dateTimeThisYear('now')
         ];
     }
 }

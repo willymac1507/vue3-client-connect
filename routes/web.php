@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/messages', [MessageController::class, 'index'])->name('messages');
+    Route::get('/message/{message:id}/show', [MessageController::class, 'show'])->name('showMessage');
     Route::get('/admin', [AdminController::class, 'index'])->middleware('can:admin, App\Models\User')->name('admin');
 });
 

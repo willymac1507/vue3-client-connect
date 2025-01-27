@@ -2,17 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\Conversations;
+use App\Models\Message;
+use App\Traits\Messages;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class MessageController extends Controller
 {
-    use Conversations;
+    use Messages;
 
     public function index()
     {
-        return Inertia::render('Conversations', [
-            'conversations' => $this->getUnreadConversations()
+        return Inertia::render('Messages', [
+            'messages' => $this->getAllMessages()
         ]);
+    }
+
+    public function show(Request $request, Message $message)
+    {
+        $response = Gate::inspect('view', $message);
+
+        if ($response->allowed()) {
+            return Inertia::render('Messages/ShowMessage', ['message' => $message]);
+        } else {
+            return to_route('messages');
+        }
+
+
     }
 }

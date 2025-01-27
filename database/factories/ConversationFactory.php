@@ -17,8 +17,6 @@ class ConversationFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'subject' => $this->faker->sentence()
-        ];
+        return [];
     }
 }

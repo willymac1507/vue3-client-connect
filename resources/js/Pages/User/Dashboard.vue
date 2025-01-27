@@ -34,6 +34,7 @@ defineProps({
                             <h3>Messages</h3>
                         </div>
                     </template>
+                    <div class="flex justify-between"></div>
                 </PageSection>
             </div>
         </div>

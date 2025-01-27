@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->unsignedInteger('sender_id');
             $table->unsignedInteger('recipient_id');
             $table->unsignedInteger('conversation_id');
+            $table->text('subject');
             $table->text('body');
             $table->boolean('isRead')->default(false);
             $table->timestamps();
