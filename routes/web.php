@@ -21,10 +21,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
-    Route::get('/messages', [MessageController::class, 'index'])->name('messages');
-    Route::get('/message/{message:id}/show', [MessageController::class, 'show'])->name('showMessage');
+
     Route::get('/admin', [AdminController::class, 'index'])->middleware('can:admin, App\Models\User')->name('admin');
 });
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/messages/all', [MessageController::class, 'index'])->name('allMessages');
+    Route::get('/messages/unread', [MessageController::class, 'unread'])->name('unreadMessages');
+    Route::get('/messages/sent', [MessageController::class, 'sent'])->name('sentMessages');
+    Route::get('/message/{message:id}/show', [MessageController::class, 'show'])->name('showMessage');
+})->name('messages');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

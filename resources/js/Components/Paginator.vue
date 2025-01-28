@@ -1,37 +1,73 @@
 <script setup>
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/20/solid";
+import {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    EllipsisHorizontalIcon,
+} from "@heroicons/vue/20/solid";
+import { ref } from "vue";
 
 let props = defineProps({
-    links: Array,
-    from: Number,
-    to: Number,
-    total: Number,
-    current: Number,
+    messages: Object,
 });
+let links = [];
+const from = props.messages.from;
+const to = props.messages.to;
+const total = props.messages.total;
+let rolling = ref(false);
+const maxPages = 7;
+const totalPages = props.messages.links.length - 2;
+rolling.value = totalPages > maxPages;
+links = rolling.value ? rollingLinks() : props.messages.links;
+if (!rolling.value) {
+    links.shift();
+    links.pop();
+}
 
-let last = props.links.length - 1;
+function rollingLinks() {
+    let linkArray = [];
+    let startPage = props.messages.current_page - 3;
+    let endPage = props.messages.current_page + 3;
+    if (startPage < 1) {
+        endPage += Math.abs(startPage) + 1;
+        startPage = 1;
+    }
+    if (endPage > totalPages) {
+        startPage -= endPage - totalPages;
+        endPage = totalPages;
+    }
+    for (let i = startPage; i <= endPage; i++) {
+        let content = {
+            active: i === props.messages.current_page,
+            label: i,
+            url: `http://localhost:8888/messages/all?page=${i}`,
+        };
+        linkArray.push(content);
+    }
+    return linkArray;
+}
 
-console.log(props.links);
+let last = links.length - 1;
 </script>
 <template>
     <div
         class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
     >
-        <!-- TODO: Add urls for responsive paginator buttons -->
-        <!-- -->
-        <!--        <div class="flex flex-1 justify-between sm:hidden">-->
-        <!--            <Link-->
-        <!--                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"-->
-        <!--                href="#"-->
-        <!--                >Previous-->
-        <!--            </Link>-->
-        <!--            <Link-->
-        <!--                class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"-->
-        <!--                href="#"-->
-        <!--                >Next-->
-        <!--            </Link>-->
-        <!--        </div>-->
+        <div class="flex flex-1 justify-between sm:hidden">
+            <Component
+                :is="links[0].url ? 'Ilink' : 'span'"
+                :href="links[0].url"
+                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >Previous
+            </Component>
+            <Component
+                :is="links[last].url ? 'Ilink' : 'span'"
+                :href="links[last].url"
+                class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >Next
+            </Component>
+        </div>
         <div
+            v-if="messages.total > 0"
             class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
         >
             <div>
@@ -50,41 +86,32 @@ console.log(props.links);
                     aria-label="Pagination"
                     class="isolate inline-flex -space-x-px rounded-md shadow-xs"
                 >
+                    <Component
+                        :is="messages.prev_page_url ? 'Ilink' : 'span'"
+                        :class="{
+                            'hover:bg-gray-50 text-gray-900':
+                                messages.prev_page_url,
+                            'text-gray-500': !messages.prev_page_url,
+                        }"
+                        :href="messages.prev_page_url"
+                        aria-label="Previous"
+                        class="relative z-10 inline-flex items-center py-2 px-2 rounded-l-md ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
+                    >
+                        <ChevronLeftIcon aria-hidden="true" class="size-5" />
+                    </Component>
+                    <span
+                        v-if="links[0].label > 1"
+                        class="relative z-10 inline-flex items-center py-2 px-2 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 text-gray-500"
+                        ><EllipsisHorizontalIcon
+                            aria-hidden="true"
+                            class="size-5"
+                    /></span>
                     <template v-for="(link, linkIdx) in links">
-                        <Component
-                            :is="link.url ? 'Ilink' : 'span'"
-                            v-if="linkIdx === 0"
-                            :class="{
-                                'hover:bg-gray-50 text-gray-900': link.url,
-                                'text-gray-500': !link.url,
-                            }"
-                            :href="link.url"
-                            aria-label="Previous"
-                            class="relative z-10 inline-flex items-center py-2 px-2 rounded-l-md ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
-                        >
-                            <ChevronLeftIcon
-                                aria-hidden="true"
-                                class="size-5"
-                            />
-                        </Component>
-                        <Component
-                            :is="link.url ? 'Ilink' : 'span'"
-                            v-else-if="linkIdx === links.length - 1"
-                            :class="{
-                                'hover:bg-gray-50 text-gray-900': link.url,
-                                'text-gray-500': !link.url,
-                            }"
-                            :href="link.url"
-                            aria-label="Previous"
-                            class="relative z-10 inline-flex items-center py-2 px-2 rounded-r-md ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
-                        >
-                            <ChevronRightIcon
-                                aria-hidden="true"
-                                class="size-5"
-                            />
-                        </Component>
                         <Ilink
-                            v-else
+                            v-if="
+                                link.label !== '&laquo; Previous' &&
+                                link.label !== 'Next &raquo;'
+                            "
                             :class="
                                 link.active
                                     ? 'z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
@@ -96,6 +123,26 @@ console.log(props.links);
                         >
                         </Ilink>
                     </template>
+                    <span
+                        v-if="links[last].label < messages.last_page"
+                        class="relative z-10 inline-flex items-center py-2 px-2 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 text-gray-500"
+                        ><EllipsisHorizontalIcon
+                            aria-hidden="true"
+                            class="size-5"
+                    /></span>
+                    <Component
+                        :is="messages.next_page_url ? 'Ilink' : 'span'"
+                        :class="{
+                            'hover:bg-gray-50 text-gray-900':
+                                messages.next_page_url,
+                            'text-gray-500': !messages.next_page_url,
+                        }"
+                        :href="messages.next_page_url"
+                        aria-label="Next"
+                        class="relative z-10 inline-flex items-center py-2 px-2 rounded-r-md ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
+                    >
+                        <ChevronRightIcon aria-hidden="true" class="size-5" />
+                    </Component>
                     <!--                    <Link-->
                     <!--                        class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"-->
                     <!--                        href="#"-->
@@ -148,6 +195,12 @@ console.log(props.links);
                     <!--                    </a>-->
                 </nav>
             </div>
+        </div>
+        <div
+            v-else
+            class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
+        >
+            No messages
         </div>
     </div>
 </template>

@@ -42,8 +42,8 @@ const showingNavigationDropdown = ref(false);
                         >Admin
                     </NavLink>
                     <NavLink
-                        :active="route().current('messages')"
-                        :href="route('messages')"
+                        :active="route().current('unreadMessages')"
+                        :href="route('unreadMessages')"
                     >
                         Messages
                     </NavLink>

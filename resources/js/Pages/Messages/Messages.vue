@@ -6,6 +6,7 @@ import MessageTable from "@/Pages/Messages/MessageTable.vue";
 
 const props = defineProps({
     messages: Object,
+    status: String,
 });
 </script>
 <template>
@@ -18,7 +19,7 @@ const props = defineProps({
         </template>
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <MessageTable :messages="messages" status="unread" />
+                <MessageTable :messages="messages" :status="status" />
             </div>
         </div>
     </AuthenticatedLayout>

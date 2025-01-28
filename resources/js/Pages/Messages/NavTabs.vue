@@ -1,3 +1,8 @@
+<script setup>
+defineProps({
+    tabs: Array,
+});
+</script>
 <template>
     <div>
         <div class="grid grid-cols-1 sm:hidden">
@@ -14,10 +19,6 @@
                     {{ tab.name }}
                 </option>
             </select>
-            <ChevronDownIcon
-                aria-hidden="true"
-                class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end fill-gray-500"
-            />
         </div>
         <div class="hidden sm:block">
             <nav
@@ -51,10 +52,3 @@
         </div>
     </div>
 </template>
-<script setup>
-import { ChevronDownIcon } from "@heroicons/vue/16/solid";
-
-defineProps({
-    tabs: Array,
-});
-</script>

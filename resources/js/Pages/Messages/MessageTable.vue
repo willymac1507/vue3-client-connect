@@ -10,10 +10,22 @@ let props = defineProps({
 });
 
 const tabs = [
-    { name: "Unread", href: "#", current: props.status === "unread" },
-    { name: "Flagged", href: "#", current: props.status === "flagged" },
-    { name: "All Mail", href: "#", current: props.status === "all" },
-    { name: "Sent", href: "#", current: props.status === "sent" },
+    {
+        name: "Unread",
+        href: "/messages/unread",
+        current: props.status === "unread",
+    },
+    {
+        name: "Flagged",
+        href: "/messages/flagged",
+        current: props.status === "flagged",
+    },
+    {
+        name: "All Mail",
+        href: "/messages/all",
+        current: props.status === "all",
+    },
+    { name: "Sent", href: "/messages/sent", current: props.status === "sent" },
 ];
 </script>
 <template>
@@ -46,12 +58,6 @@ const tabs = [
                 {{ message.subject }}
             </div>
         </div>
-        <Paginator
-            :current="messages.current"
-            :from="messages.from"
-            :links="messages.links"
-            :to="messages.to"
-            :total="messages.total"
-        />
+        <Paginator :messages="messages" />
     </div>
 </template>

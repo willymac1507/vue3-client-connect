@@ -24,10 +24,13 @@ trait Messages
             ->where('isRead', false)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-//        $conversations = Conversation::with('messages', 'messages.sender', 'messages.recipient');
-//
-//        return Conversation::with('messages', 'messages.sender', 'messages.recipient')
-//            ->whereRelation('messages', 'recipient_id', '=', Auth::id())
-//            ->get();
+    }
+
+    public function getSentMessages(): _IH_Message_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator|LengthAwarePaginator|array
+    {
+        return Message::with('recipient:id,name')
+            ->where('sender_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
     }
 }
