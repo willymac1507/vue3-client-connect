@@ -14,8 +14,8 @@ class MessageController extends Controller
 
     public function index()
     {
-        return Inertia::render('Messages', [
-            'messages' => $this->getAllMessages()
+        return Inertia::render('Messages/Unread', [
+            'messages' => $this->getUnreadMessages()
         ]);
     }
 
