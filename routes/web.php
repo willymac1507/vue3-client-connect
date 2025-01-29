@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/messages/unread', [MessageController::class, 'unread'])->name('unreadMessages');
     Route::get('/messages/sent', [MessageController::class, 'sent'])->name('sentMessages');
     Route::get('/message/{message:id}/show', [MessageController::class, 'show'])->name('showMessage');
+    Route::get('/messages/create', [MessageController::class, 'create'])->name('createMessage');
 })->name('messages');
 
 Route::middleware('auth')->group(function () {

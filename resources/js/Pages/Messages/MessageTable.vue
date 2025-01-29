@@ -11,6 +11,10 @@ import {
 } from "@headlessui/vue";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { ref } from "vue";
+import Card from "@/Pages/Messages/Card.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
 
 const previewOpen = ref(false);
 let previewMesssage = ref([]);
@@ -107,32 +111,44 @@ const tabs = [
                                         </div>
                                     </div>
                                     <div
-                                        class="relative mt-6 flex-1 px-4 sm:px-6"
+                                        class="relative mt-6 flex-1 px-4 sm:px-6 space-y-6"
                                     >
-                                        <div
-                                            class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-sm mb-4"
-                                        >
+                                        <Card title="Subject"
+                                            >{{ previewMesssage.subject }}
+                                        </Card>
+                                        <Card title="Body">
+                                            {{ previewMesssage.body }}
+                                        </Card>
+                                        <Card title="Booking">
+                                            Booking details here
+                                            <secondary-button
+                                                >view
+                                            </secondary-button>
+                                        </Card>
+                                        <Card title="Actions">
                                             <div
-                                                class="font-semibold px-4 py-5 sm:px-6"
+                                                class="flex flex-col sm:flex-row justify-between"
                                             >
-                                                Subject
+                                                <PrimaryButton
+                                                    >Reply
+                                                </PrimaryButton>
+                                                <SecondaryButton
+                                                    v-if="
+                                                        !previewMesssage.isRead
+                                                    "
+                                                    >Mark as read
+                                                </SecondaryButton>
+                                                <SecondaryButton
+                                                    v-if="
+                                                        previewMesssage.isRead
+                                                    "
+                                                    >Mark as unread
+                                                </SecondaryButton>
+                                                <DangerButton
+                                                    >Flag
+                                                </DangerButton>
                                             </div>
-                                            <div class="px-4 py-5 sm:p-6">
-                                                {{ previewMesssage.subject }}
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-sm"
-                                        >
-                                            <div
-                                                class="font-semibold px-4 py-5 sm:px-6"
-                                            >
-                                                Body
-                                            </div>
-                                            <div class="px-4 py-5 sm:p-6">
-                                                {{ previewMesssage.body }}
-                                            </div>
-                                        </div>
+                                        </Card>
                                     </div>
                                 </div>
                             </DialogPanel>
@@ -148,28 +164,24 @@ const tabs = [
         <NavTabs :tabs="tabs" />
         <div
             v-for="message in messages.data"
-            class="container-md py-1 flex flex-col align-left"
+            class="cursor-pointer container-md w-full py-1 flex flex-col align-left"
+            type="button"
+            @click="
+                previewOpen = true;
+                previewMesssage = message;
+            "
         >
             <div class="flex justify-between">
                 <div class="font-semibold">
-                    <!--                    <MessageLink-->
-                    <!--                        :href="'/message/' + message.id + '/show'"-->
-                    <!--                        :un-read="!message.isRead"-->
-                    <!--                        >{{ message.sender.name }}-->
-                    <!--                    </MessageLink>-->
-                    <button
+                    <div
                         :class="{
                             'text-cyan-700 font-bold': !message.isRead,
                             'text-gray-500 font-semibold': message.isRead,
                         }"
                         class="pt-1 text-sm leading-5"
-                        @click="
-                            previewOpen = true;
-                            previewMesssage = message;
-                        "
                     >
                         {{ message.sender.name }}
-                    </button>
+                    </div>
                 </div>
                 <div
                     class="ml-auto text-gray-400 text-sm"
@@ -180,7 +192,7 @@ const tabs = [
                     "
                 />
             </div>
-            <div class="truncate w-3/4">
+            <div class="mr-auto truncate w-3/4">
                 {{ message.subject }}
             </div>
         </div>
