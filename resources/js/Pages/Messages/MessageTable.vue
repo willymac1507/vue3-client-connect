@@ -83,10 +83,21 @@ const tabs = [
                                         >
                                             <DialogTitle
                                                 class="text-base font-semibold text-gray-900"
-                                                >From:
-                                                {{
-                                                    previewMesssage.sender.name
-                                                }}
+                                            >
+                                                <span v-if="status === 'sent'"
+                                                    >To:
+                                                    {{
+                                                        previewMesssage
+                                                            .recipient.name
+                                                    }}</span
+                                                >
+                                                <span v-if="status !== 'sent'"
+                                                    >From:
+                                                    {{
+                                                        previewMesssage.sender
+                                                            .name
+                                                    }}</span
+                                                >
                                             </DialogTitle>
                                             <div
                                                 class="ml-3 flex h-7 items-center"
@@ -130,17 +141,23 @@ const tabs = [
                                                 class="flex flex-col sm:flex-row justify-between"
                                             >
                                                 <PrimaryButton
+                                                    v-if="status !== 'sent'"
                                                     >Reply
                                                 </PrimaryButton>
+                                                <PrimaryButton v-else
+                                                    >Forward</PrimaryButton
+                                                >
                                                 <SecondaryButton
                                                     v-if="
-                                                        !previewMesssage.isRead
+                                                        !previewMesssage.isRead &&
+                                                        status !== 'sent'
                                                     "
                                                     >Mark as read
                                                 </SecondaryButton>
                                                 <SecondaryButton
                                                     v-if="
-                                                        previewMesssage.isRead
+                                                        previewMesssage.isRead &&
+                                                        status !== 'sent'
                                                     "
                                                     >Mark as unread
                                                 </SecondaryButton>
@@ -179,9 +196,12 @@ const tabs = [
                             'text-gray-500 font-semibold': message.isRead,
                         }"
                         class="pt-1 text-sm leading-5"
-                    >
-                        {{ message.sender.name }}
-                    </div>
+                        v-text="
+                            status === 'sent'
+                                ? message.recipient.name
+                                : message.sender.name
+                        "
+                    />
                 </div>
                 <div
                     class="ml-auto text-gray-400 text-sm"

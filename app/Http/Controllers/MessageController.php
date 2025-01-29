@@ -49,12 +49,26 @@ class MessageController extends Controller
         }
     }
 
+    public function store(Request $request)
+    {
+        $attributes = $request->validate([
+            'sender_id' => 'required',
+            'recipient_id' => 'required',
+            'body' => 'required',
+            'subject' => 'required'
+        ]);
+
+        Message::create($attributes);
+        return redirect('/messages/sent');
+    }
+
     public function create()
     {
         return Inertia::render('Messages/Create', ['contacts' => $this->getLinkedContacts(Auth::user())->map(fn($user) => [
             'id' => $user->id,
             'name' => $user->name,
             'organisation' => $user->organisation_id ??= 0
-        ])]);
+        ]),
+            'sender_id' => Auth::id()]);
     }
 }

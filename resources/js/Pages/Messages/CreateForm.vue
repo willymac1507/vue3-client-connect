@@ -1,11 +1,21 @@
 <script setup>
 import { inject, reactive } from "vue";
+import { router } from "@inertiajs/vue3";
+
+let props = defineProps({
+    sender: Number,
+});
 
 let form = reactive({
-    recipient: "",
+    sender_id: props.sender,
+    recipient_id: "",
     subject: "",
     body: "",
 });
+
+let submit = () => {
+    router.post("/messages", form);
+};
 
 const contacts = inject("contacts");
 </script>
@@ -13,7 +23,7 @@ const contacts = inject("contacts");
     <div
         class="overflow-hidden bg-white shadow-sm sm:rounded-lg gap-y-4 p-6 divide-y-2"
     >
-        <form>
+        <form @submit.prevent="submit">
             <div class="space-y-12">
                 <div class="border-b border-gray-900/10 pb-12">
                     <h2 class="text-base/7 font-semibold text-gray-900">
@@ -31,7 +41,7 @@ const contacts = inject("contacts");
                             <div class="mt-2">
                                 <select
                                     id="recipient"
-                                    v-model="form.recipient"
+                                    v-model="form.recipient_id"
                                     class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                     name="recipient"
                                 >

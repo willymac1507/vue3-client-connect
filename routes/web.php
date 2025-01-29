@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/messages/sent', [MessageController::class, 'sent'])->name('sentMessages');
     Route::get('/message/{message:id}/show', [MessageController::class, 'show'])->name('showMessage');
     Route::get('/messages/create', [MessageController::class, 'create'])->name('createMessage');
+    Route::post('/messages', [MessageController::class, 'store'])->name('storeMessage');
 })->name('messages');
 
 Route::middleware('auth')->group(function () {

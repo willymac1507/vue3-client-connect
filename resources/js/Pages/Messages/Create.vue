@@ -3,9 +3,11 @@
 import { provide } from "vue";
 import CreateForm from "@/Pages/Messages/CreateForm.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { Head } from "@inertiajs/vue3";
 
 let props = defineProps({
     contacts: Array,
+    sender_id: Number,
 });
 
 provide("contacts", props.contacts);
@@ -22,7 +24,7 @@ provide("contacts", props.contacts);
         </template>
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <CreateForm />
+                <CreateForm :sender="sender_id" />
             </div>
         </div>
     </AuthenticatedLayout>

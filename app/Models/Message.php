@@ -13,10 +13,12 @@ class Message extends Model
     /** @use HasFactory<MessageFactory> */
     use HasFactory;
 
-    public function conversation(): BelongsTo
-    {
-        return $this->belongsTo(Conversation::class);
-    }
+    protected $fillable = [
+        'sender_id',
+        'recipient_id',
+        'subject',
+        'body',
+    ];
 
     public function sender(): HasOne
     {
@@ -26,5 +28,10 @@ class Message extends Model
     public function recipient(): HasOne
     {
         return $this->HasOne(User::class, 'id', 'recipient_id');
+    }
+
+    public function booking(): BelongsTo
+    {
+        return $this->belongsTo(Booking::class, 'id', 'booking_id');
     }
 }
