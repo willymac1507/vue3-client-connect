@@ -21,7 +21,6 @@ let previewMessage = ref([]);
 
 let props = defineProps({
     messages: Object,
-    pagKey: Number,
     status: String,
 });
 
@@ -217,6 +216,6 @@ const tabs = [
                 {{ message.subject }}
             </div>
         </div>
-        <Paginator :key="pagKey" :messages="messages" />
+        <Paginator :key="messages.total" :messages="messages" />
     </div>
 </template>

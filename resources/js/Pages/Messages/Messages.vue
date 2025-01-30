@@ -5,7 +5,6 @@ import { Head, router, usePage } from "@inertiajs/vue3";
 import MessageTable from "@/Pages/Messages/MessageTable.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { ref, watch } from "vue";
-import { now } from "lodash/date.js";
 
 const props = defineProps({
     messages: Object,
@@ -51,11 +50,7 @@ watch(search, (value) => {
         </template>
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <MessageTable
-                    :messages="messages"
-                    :pag-key="now()"
-                    :status="status"
-                />
+                <MessageTable :messages="messages" :status="status" />
             </div>
         </div>
     </AuthenticatedLayout>

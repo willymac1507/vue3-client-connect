@@ -14,6 +14,9 @@ trait Messages
     public function getAllMessages(): _IH_Message_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator|LengthAwarePaginator|array
     {
         return Message::with('sender:id,name')
+            ->when(Request::input('search'), function ($query, $search) {
+                $query->whereRelation('sender', 'name', 'like', "%{$search}%");
+            })
             ->where('recipient_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -35,6 +38,9 @@ trait Messages
     public function getSentMessages(): _IH_Message_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator|LengthAwarePaginator|array
     {
         return Message::with('recipient:id,name')
+            ->when(Request::input('search'), function ($query, $search) {
+                $query->whereRelation('recipient', 'name', 'like', "%{$search}%");
+            })
             ->where('sender_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->paginate(10);
