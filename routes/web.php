@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/message/{message:id}/show', [MessageController::class, 'show'])->name('showMessage');
     Route::get('/messages/create', [MessageController::class, 'create'])->name('createMessage');
     Route::post('/messages', [MessageController::class, 'store'])->name('storeMessage');
+    Route::patch('/message/{message:id}/update', [MessageController::class, 'markRead'])->name('markMessageRead');
 })->name('messages');
 
 Route::middleware('auth')->group(function () {
