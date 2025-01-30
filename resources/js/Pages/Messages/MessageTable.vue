@@ -1,7 +1,6 @@
 <script setup>
 import NavTabs from "@/Pages/Messages/NavTabs.vue";
 import { format, isToday } from "date-fns";
-import Paginator from "@/Components/Paginator.vue";
 import {
     Dialog,
     DialogPanel,
@@ -15,12 +14,14 @@ import Card from "@/Pages/Messages/Card.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
+import Paginator from "@/Components/Paginator.vue";
 
 const previewOpen = ref(false);
-let previewMesssage = ref([]);
+let previewMessage = ref([]);
 
 let props = defineProps({
     messages: Object,
+    pagKey: Number,
     status: String,
 });
 
@@ -87,14 +88,14 @@ const tabs = [
                                                 <span v-if="status === 'sent'"
                                                     >To:
                                                     {{
-                                                        previewMesssage
-                                                            .recipient.name
+                                                        previewMessage.recipient
+                                                            .name
                                                     }}</span
                                                 >
                                                 <span v-if="status !== 'sent'"
                                                     >From:
                                                     {{
-                                                        previewMesssage.sender
+                                                        previewMessage.sender
                                                             .name
                                                     }}</span
                                                 >
@@ -125,10 +126,10 @@ const tabs = [
                                         class="relative mt-6 flex-1 px-4 sm:px-6 space-y-6"
                                     >
                                         <Card title="Subject"
-                                            >{{ previewMesssage.subject }}
+                                            >{{ previewMessage.subject }}
                                         </Card>
                                         <Card title="Body">
-                                            {{ previewMesssage.body }}
+                                            {{ previewMessage.body }}
                                         </Card>
                                         <Card title="Booking">
                                             Booking details here
@@ -145,18 +146,18 @@ const tabs = [
                                                     >Reply
                                                 </PrimaryButton>
                                                 <PrimaryButton v-else
-                                                    >Forward</PrimaryButton
-                                                >
+                                                    >Forward
+                                                </PrimaryButton>
                                                 <SecondaryButton
                                                     v-if="
-                                                        !previewMesssage.isRead &&
+                                                        !previewMessage.isRead &&
                                                         status !== 'sent'
                                                     "
                                                     >Mark as read
                                                 </SecondaryButton>
                                                 <SecondaryButton
                                                     v-if="
-                                                        previewMesssage.isRead &&
+                                                        previewMessage.isRead &&
                                                         status !== 'sent'
                                                     "
                                                     >Mark as unread
@@ -185,7 +186,7 @@ const tabs = [
             type="button"
             @click="
                 previewOpen = true;
-                previewMesssage = message;
+                previewMessage = message;
             "
         >
             <div class="flex justify-between">
@@ -216,6 +217,6 @@ const tabs = [
                 {{ message.subject }}
             </div>
         </div>
-        <Paginator :messages="messages" />
+        <Paginator :key="pagKey" :messages="messages" />
     </div>
 </template>

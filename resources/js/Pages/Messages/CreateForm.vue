@@ -1,9 +1,11 @@
 <script setup>
 import { inject, reactive } from "vue";
 import { router } from "@inertiajs/vue3";
+import ValidationError from "@/Pages/Messages/ValidationError.vue";
 
 let props = defineProps({
     sender: Number,
+    errors: Object,
 });
 
 let form = reactive({
@@ -23,7 +25,7 @@ const contacts = inject("contacts");
     <div
         class="overflow-hidden bg-white shadow-sm sm:rounded-lg gap-y-4 p-6 divide-y-2"
     >
-        <form @submit.prevent="submit">
+        <form novalidate @submit.prevent="submit">
             <div class="space-y-12">
                 <div class="border-b border-gray-900/10 pb-12">
                     <h2 class="text-base/7 font-semibold text-gray-900">
@@ -44,6 +46,7 @@ const contacts = inject("contacts");
                                     v-model="form.recipient_id"
                                     class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                     name="recipient"
+                                    required
                                 >
                                     <option disabled value="">
                                         Choose Recipient
@@ -58,6 +61,7 @@ const contacts = inject("contacts");
                                         {{ contact.name }}
                                     </option>
                                 </select>
+                                <ValidationError :error="errors.recipient_id" />
                             </div>
                         </div>
                         <div class="col-span-full">
@@ -72,8 +76,10 @@ const contacts = inject("contacts");
                                     v-model="form.subject"
                                     class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                     name="subject"
+                                    required
                                     type="text"
                                 />
+                                <ValidationError :error="errors.subject" />
                             </div>
                         </div>
                         <div class="col-span-full">
@@ -88,8 +94,10 @@ const contacts = inject("contacts");
                                     v-model="form.body"
                                     class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                     name="body"
+                                    required
                                     rows="5"
                                 />
+                                <ValidationError :error="errors.body" />
                             </div>
                         </div>
                     </div>

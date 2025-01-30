@@ -4,11 +4,12 @@ import {
     ChevronRightIcon,
     EllipsisHorizontalIcon,
 } from "@heroicons/vue/20/solid";
-import { ref } from "vue";
+import { onUpdated, ref } from "vue";
 
 let props = defineProps({
     messages: Object,
 });
+
 let links = [];
 const from = props.messages.from;
 const to = props.messages.to;
@@ -22,6 +23,10 @@ if (!rolling.value) {
     links.shift();
     links.pop();
 }
+
+onUpdated(() => {
+    console.log("Updated");
+});
 
 function rollingLinks() {
     let linkArray = [];
@@ -143,56 +148,6 @@ let last = links.length - 1;
                     >
                         <ChevronRightIcon aria-hidden="true" class="size-5" />
                     </Component>
-                    <!--                    <Link-->
-                    <!--                        class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"-->
-                    <!--                        href="#"-->
-                    <!--                    >-->
-                    <!--                        <span class="sr-only">Previous</span>-->
-                    <!--                        <ChevronLeftIcon aria-hidden="true" class="size-5" />-->
-                    <!--                    </Link>-->
-                    <!--                    &lt;!&ndash; Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" &ndash;&gt;-->
-                    <!--                    <a-->
-                    <!--                        aria-current="page"-->
-                    <!--                        class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"-->
-                    <!--                        href="#"-->
-                    <!--                        >1</a-->
-                    <!--                    >-->
-                    <!--                    <a-->
-                    <!--                        class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"-->
-                    <!--                        href="#"-->
-                    <!--                        >2</a-->
-                    <!--                    >-->
-                    <!--                    <a-->
-                    <!--                        class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"-->
-                    <!--                        href="#"-->
-                    <!--                        >3</a-->
-                    <!--                    >-->
-                    <!--                    <span-->
-                    <!--                        class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0"-->
-                    <!--                        >...</span-->
-                    <!--                    >-->
-                    <!--                    <a-->
-                    <!--                        class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"-->
-                    <!--                        href="#"-->
-                    <!--                        >8</a-->
-                    <!--                    >-->
-                    <!--                    <a-->
-                    <!--                        class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"-->
-                    <!--                        href="#"-->
-                    <!--                        >9</a-->
-                    <!--                    >-->
-                    <!--                    <a-->
-                    <!--                        class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"-->
-                    <!--                        href="#"-->
-                    <!--                        >10</a-->
-                    <!--                    >-->
-                    <!--                    <a-->
-                    <!--                        class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"-->
-                    <!--                        href="#"-->
-                    <!--                    >-->
-                    <!--                        <span class="sr-only">Next</span>-->
-                    <!--                        <ChevronRightIcon aria-hidden="true" class="size-5" />-->
-                    <!--                    </a>-->
                 </nav>
             </div>
         </div>

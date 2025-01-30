@@ -45,7 +45,7 @@ class MessageController extends Controller
         if ($response->allowed()) {
             return Inertia::render('Messages/ShowMessage', ['message' => $message]);
         } else {
-            return to_route('messages');
+            return to_route('messagObjects');
         }
     }
 

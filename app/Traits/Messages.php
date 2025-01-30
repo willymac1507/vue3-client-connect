@@ -5,10 +5,12 @@ namespace App\Traits;
 use App\Models\Message;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use LaravelIdea\Helper\App\Models\_IH_Message_C;
 
 trait Messages
 {
+
     public function getAllMessages(): _IH_Message_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator|LengthAwarePaginator|array
     {
         return Message::with('sender:id,name')
@@ -19,7 +21,11 @@ trait Messages
 
     public function getUnreadMessages(): _IH_Message_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator|LengthAwarePaginator|array
     {
-        return Message::with('sender:id,name')
+        return Message::query()
+            ->with('sender:id,name')
+            ->when(Request::input('search'), function ($query, $search) {
+                $query->whereRelation('sender', 'name', 'like', "%{$search}%");
+            })
             ->where('recipient_id', Auth::id())
             ->where('isRead', false)
             ->orderBy('created_at', 'desc')
