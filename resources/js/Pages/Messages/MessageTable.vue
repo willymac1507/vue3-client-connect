@@ -15,7 +15,6 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import Paginator from "@/Components/Paginator.vue";
-import { router } from "@inertiajs/vue3";
 
 const previewOpen = ref(false);
 let previewMessage = ref([]);
@@ -24,11 +23,6 @@ let props = defineProps({
     messages: Object,
     status: String,
 });
-
-function markAsRead(id) {
-    this.previewOpen = false;
-    router.patch(`/message/${id}/update`);
-}
 
 const tabs = [
     {
@@ -157,11 +151,6 @@ const tabs = [
                                                     v-if="
                                                         !previewMessage.isRead &&
                                                         status !== 'sent'
-                                                    "
-                                                    @click="
-                                                        markAsRead(
-                                                            previewMessage.id,
-                                                        )
                                                     "
                                                     >Mark as read
                                                 </SecondaryButton>

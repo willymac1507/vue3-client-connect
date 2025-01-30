@@ -71,11 +71,4 @@ class MessageController extends Controller
         ]),
             'sender_id' => Auth::id()]);
     }
-
-    public function markRead(Message $message)
-    {
-        $message->isRead = true;
-        $message->save();
-        return back();
-    }
 }
