@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 })->name('messages');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/bookings/all', [BookingController::class, 'index'])->name('allBookings');
     Route::get('/booking/{booking:id}/show', [BookingController::class, 'show'])->name('showBooking');
 });
 

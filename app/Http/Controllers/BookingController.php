@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Traits\Bookings;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
@@ -14,7 +13,9 @@ class BookingController extends Controller
 
     public function index()
     {
-        return Booking::with('client')->where('student_id', Auth::id())->get();
+        return Inertia::render('Bookings/index', [
+            'bookings' => $this->getAllBookings()
+        ]);
     }
 
     public function show(Booking $booking)

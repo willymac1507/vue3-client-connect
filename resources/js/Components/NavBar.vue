@@ -3,7 +3,7 @@ import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import Dropdown from "@/Components/Dropdown.vue";
 import { ref } from "vue";
 
@@ -30,13 +30,13 @@ const showingNavigationDropdown = ref(false);
                         Dashboard
                     </NavLink>
                     <NavLink
-                        v-if="$page.props.can['superAdmin']"
+                        v-if="usePage().props.can['superAdmin']"
                         :active="route().current('superAdmin')"
                         :href="route('superAdmin')"
                         >Super Admin
                     </NavLink>
                     <NavLink
-                        v-if="$page.props.can['admin']"
+                        v-if="usePage().props.can['admin']"
                         :active="route().current('admin')"
                         :href="route('admin')"
                         >Admin
@@ -46,6 +46,12 @@ const showingNavigationDropdown = ref(false);
                         :href="route('unreadMessages')"
                     >
                         Messages
+                    </NavLink>
+                    <NavLink
+                        :active="route().current('allBookings')"
+                        :href="route('allBookings')"
+                    >
+                        Bookings
                     </NavLink>
                 </div>
             </div>

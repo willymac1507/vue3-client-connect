@@ -10,7 +10,7 @@ import {
 } from "@headlessui/vue";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { ref } from "vue";
-import Card from "@/Pages/Messages/Card.vue";
+import Card from "@/Components/Card.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
@@ -50,6 +50,10 @@ function toggleRead(id) {
 
 function toggleFlag(id) {
     router.patch(`/message/${id}/flag`);
+}
+
+function viewBooking(id) {
+    router.get(`/booking/${id}/show`);
 }
 </script>
 <template>
@@ -156,6 +160,12 @@ function toggleFlag(id) {
                                                     }}
                                                 </div>
                                                 <secondary-button
+                                                    @click="
+                                                        previewOpen = false;
+                                                        viewBooking(
+                                                            previewMessage.id,
+                                                        );
+                                                    "
                                                     >view
                                                 </secondary-button>
                                             </div>
