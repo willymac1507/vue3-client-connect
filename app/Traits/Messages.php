@@ -13,7 +13,7 @@ trait Messages
 
     public function getAllMessages(): _IH_Message_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator|LengthAwarePaginator|array
     {
-        return Message::with('sender:id,name')
+        return Message::with(['sender:id,name', 'booking'])
             ->when(Request::input('search'), function ($query, $search) {
                 $query->whereRelation('sender', 'name', 'like', "%{$search}%");
             })
@@ -25,7 +25,7 @@ trait Messages
     public function getUnreadMessages(): _IH_Message_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator|LengthAwarePaginator|array
     {
         return Message::query()
-            ->with('sender:id,name')
+            ->with(['sender:id,name', 'booking'])
             ->when(Request::input('search'), function ($query, $search) {
                 $query->whereRelation('sender', 'name', 'like', "%{$search}%");
             })
@@ -35,9 +35,22 @@ trait Messages
             ->paginate(10);
     }
 
+    public function getFlaggedMessages(): _IH_Message_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator|LengthAwarePaginator|array
+    {
+        return Message::query()
+            ->with(['sender:id,name', 'booking'])
+            ->when(Request::input('search'), function ($query, $search) {
+                $query->whereRelation('sender', 'name', 'like', "%{$search}%");
+            })
+            ->where('recipient_id', Auth::id())
+            ->where('flagged', true)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+    }
+
     public function getSentMessages(): _IH_Message_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator|LengthAwarePaginator|array
     {
-        return Message::with('recipient:id,name')
+        return Message::with(['recipient:id,name', 'booking'])
             ->when(Request::input('search'), function ($query, $search) {
                 $query->whereRelation('recipient', 'name', 'like', "%{$search}%");
             })

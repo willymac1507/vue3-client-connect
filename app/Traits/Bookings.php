@@ -13,4 +13,9 @@ trait Bookings
     {
         return Booking::with('client')->where('student_id', Auth::id())->get();
     }
+
+    public function getThisBooking(Booking $booking)
+    {
+        return Booking::with(['client', 'student', 'messages'])->findOrFail($booking->id);
+    }
 }

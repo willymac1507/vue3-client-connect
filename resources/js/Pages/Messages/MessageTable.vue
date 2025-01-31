@@ -15,6 +15,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import Paginator from "@/Components/Paginator.vue";
+import { router } from "@inertiajs/vue3";
 
 const previewOpen = ref(false);
 let previewMessage = ref([]);
@@ -42,6 +43,14 @@ const tabs = [
     },
     { name: "Sent", href: "/messages/sent", current: props.status === "sent" },
 ];
+
+function toggleRead(id) {
+    router.patch(`/message/${id}/read`);
+}
+
+function toggleFlag(id) {
+    router.patch(`/message/${id}/flag`);
+}
 </script>
 <template>
     <TransitionRoot :show="previewOpen" as="template">
@@ -130,11 +139,26 @@ const tabs = [
                                         <Card title="Body">
                                             {{ previewMessage.body }}
                                         </Card>
-                                        <Card title="Booking">
-                                            Booking details here
-                                            <secondary-button
-                                                >view
-                                            </secondary-button>
+                                        <Card
+                                            v-if="previewMessage.booking"
+                                            title="Booking"
+                                        >
+                                            <div
+                                                class="flex flex-col sm:flex-row justify-between"
+                                            >
+                                                <div>
+                                                    {{
+                                                        format(
+                                                            previewMessage
+                                                                .booking.start,
+                                                            "EEE do MMM yyyy @ HH:mm",
+                                                        )
+                                                    }}
+                                                </div>
+                                                <secondary-button
+                                                    >view
+                                                </secondary-button>
+                                            </div>
                                         </Card>
                                         <Card title="Actions">
                                             <div
@@ -152,6 +176,12 @@ const tabs = [
                                                         !previewMessage.isRead &&
                                                         status !== 'sent'
                                                     "
+                                                    @click="
+                                                        previewOpen = false;
+                                                        toggleRead(
+                                                            previewMessage.id,
+                                                        );
+                                                    "
                                                     >Mark as read
                                                 </SecondaryButton>
                                                 <SecondaryButton
@@ -159,9 +189,21 @@ const tabs = [
                                                         previewMessage.isRead &&
                                                         status !== 'sent'
                                                     "
+                                                    @click="
+                                                        previewOpen = false;
+                                                        toggleRead(
+                                                            previewMessage.id,
+                                                        );
+                                                    "
                                                     >Mark as unread
                                                 </SecondaryButton>
                                                 <DangerButton
+                                                    @click="
+                                                        previewOpen = false;
+                                                        toggleFlag(
+                                                            previewMessage.id,
+                                                        );
+                                                    "
                                                     >Flag
                                                 </DangerButton>
                                             </div>
@@ -194,6 +236,7 @@ const tabs = [
                         :class="{
                             'text-cyan-700 font-bold': !message.isRead,
                             'text-gray-500 font-semibold': message.isRead,
+                            'text-red-500 font-bold': message.flagged,
                         }"
                         class="pt-1 text-sm leading-5"
                         v-text="

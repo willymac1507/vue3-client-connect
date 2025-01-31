@@ -32,6 +32,6 @@ class Message extends Model
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class, 'id', 'booking_id');
+        return $this->belongsTo(Booking::class);
     }
 }

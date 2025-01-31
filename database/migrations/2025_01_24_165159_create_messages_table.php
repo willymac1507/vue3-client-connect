@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->text('subject');
             $table->text('body');
             $table->boolean('isRead')->default(false);
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
     }

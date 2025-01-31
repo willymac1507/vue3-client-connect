@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             'contact' => 'Will McCloy',
         ]);
 
-        User::factory(30)->has(Booking::factory(5))->create([
+        User::factory(30)->has(Booking::factory(5)->has(Message::factory(5)))->create([
             'organisation_id' => null
         ]);
 
