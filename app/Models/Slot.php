@@ -6,19 +6,26 @@ use Database\Factories\SlotFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Slot extends Model
 {
     /** @use HasFactory<SlotFactory> */
     use HasFactory;
 
-    public function student(): BelongsTo
+    public function student(): HasMany
     {
-        return $this->belongsTo(User::class, 'student_id');
+        return $this->hasMany(User::class, 'student_id');
     }
 
-    public function booking(): BelongsTo
+    public function booking(): HasMany
     {
-        return $this->belongsTo(Booking::class);
+        return $this->hasMany(Booking::class);
     }
+
+    public function organisation(): BelongsTo
+    {
+        return $this->belongsTo(Organisation::class);
+    }
+
 }

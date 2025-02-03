@@ -8,6 +8,6 @@ class SlotsController extends Controller
 {
     public function edit()
     {
-        return Inertia::render('Slots/Edit');
+        return Inertia::render('Calendars/Partials/PatternSetupForm');
     }
 }
