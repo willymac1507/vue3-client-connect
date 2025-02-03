@@ -61,6 +61,12 @@ function viewBooking(id) {
         title="Message Details"
         @close-preview="previewOpen = false"
     >
+        <Card v-if="status !== 'sent'" title="Sender">{{
+            previewMessage.sender.name
+        }}</Card>
+        <Card v-else title="Recipient">{{
+            previewMessage.recipient.name
+        }}</Card>
         <Card title="Subject">{{ previewMessage.subject }}</Card>
         <Card title="Body">
             {{ previewMessage.body }}
