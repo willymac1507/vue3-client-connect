@@ -1,10 +1,10 @@
 <!--suppress HtmlRequiredTitleElement -->
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, router, usePage } from "@inertiajs/vue3";
-import MessageTable from "@/Pages/Messages/MessageTable.vue";
+import MessageTable from "./Partials/MessageTable.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { ref, watch } from "vue";
+import PageLayout from "@/Components/PageLayout.vue";
 
 const props = defineProps({
     messages: Object,
@@ -25,34 +25,25 @@ watch(search, (value) => {
 </script>
 <template>
     <Head title="Messages" />
-    <AuthenticatedLayout>
-        <template #header>
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                    Messages
-                </h2>
-                <div>
-                    <label for="filter" />
-                    <input
-                        id="filter"
-                        v-model="search"
-                        class="rounded-lg"
-                        name="filter"
-                        placeholder="Search"
-                        type="text"
-                    />
-                </div>
-                <PrimaryButton
-                    @click="router.get('/messages/create', { method: 'get' })"
-                    >New Message
-                </PrimaryButton>
+    <PageLayout title="Messages">
+        <template #otherContent>
+            <div>
+                <label for="filter" />
+                <input
+                    id="filter"
+                    v-model="search"
+                    class="rounded-lg"
+                    name="filter"
+                    placeholder="Search"
+                    type="text"
+                />
             </div>
+            <PrimaryButton
+                @click="router.get('/messages/create', { method: 'get' })"
+                >New Message
+            </PrimaryButton>
         </template>
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <MessageTable :messages="messages" :status="status" />
-            </div>
-        </div>
-    </AuthenticatedLayout>
+        <MessageTable :messages="messages" :status="status" />
+    </PageLayout>
 </template>
 <style />

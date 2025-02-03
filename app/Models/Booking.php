@@ -27,4 +27,9 @@ class Booking extends Model
     {
         return $this->hasMany(Message::class);
     }
+
+    public function slots(): HasMany
+    {
+        return $this->hasMany(Slot::class);
+    }
 }

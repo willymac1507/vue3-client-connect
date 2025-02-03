@@ -19,6 +19,11 @@ class UserPolicy
         return $user->hasRole('admin');
     }
 
+    public function student(User $user): bool
+    {
+        return $user->hasRole('student');
+    }
+
     /**
      * Determine whether the user can view the model.
      */

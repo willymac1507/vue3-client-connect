@@ -1,9 +1,8 @@
 <!--suppress HtmlRequiredTitleElement -->
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import PageSection from "@/Components/PageSection.vue";
-import { Head } from "@inertiajs/vue3";
-import DashCalendar from "@/Pages/User/DashCalendar.vue";
+import DashCalendar from "@/Pages/User/Partials/DashCalendar.vue";
+import PageLayout from "@/Components/PageLayout.vue";
 
 defineProps({
     can: Object,
@@ -11,32 +10,22 @@ defineProps({
 });
 </script>
 <template>
-    <Head title="Dashboard" />
-    <AuthenticatedLayout :can="can">
-        <template v-slot:header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Dashboard
-            </h2>
-        </template>
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <PageSection>
-                    <template v-slot:header>
-                        <div class="flex justify-between items-center">
-                            <h3>Calendar</h3>
-                        </div>
-                    </template>
-                    <DashCalendar :bookings="bookings" />
-                </PageSection>
-                <PageSection>
-                    <template v-slot:header>
-                        <div class="flex justify-between items-center">
-                            <h3>Messages</h3>
-                        </div>
-                    </template>
-                    <div class="flex justify-between"></div>
-                </PageSection>
-            </div>
-        </div>
-    </AuthenticatedLayout>
+    <PageLayout title="Dashboard">
+        <PageSection>
+            <template v-slot:header>
+                <div class="flex justify-between items-center">
+                    <h3>Calendar</h3>
+                </div>
+            </template>
+            <DashCalendar :bookings="bookings" />
+        </PageSection>
+        <PageSection>
+            <template v-slot:header>
+                <div class="flex justify-between items-center">
+                    <h3>Messages</h3>
+                </div>
+            </template>
+            <div class="flex justify-between"></div>
+        </PageSection>
+    </PageLayout>
 </template>

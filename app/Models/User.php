@@ -84,6 +84,11 @@ class User extends Authenticatable
         return $this->hasMany(Message::class, 'sender_id');
     }
 
+    public function slots(): HasMany
+    {
+        return $this->hasMany(Slot::class, 'student_id');
+    }
+
     public function hasRole($role): bool
     {
         if (is_string($role)) {

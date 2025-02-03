@@ -13,7 +13,7 @@ class BookingController extends Controller
 
     public function index()
     {
-        return Inertia::render('Bookings/index', [
+        return Inertia::render('Bookings/Index', [
             'bookings' => $this->getAllBookings()
         ]);
     }
@@ -22,7 +22,7 @@ class BookingController extends Controller
     {
         $response = Gate::inspect('view', $booking);
         if ($response->allowed()) {
-            return Inertia::render('Bookings/showBooking', [
+            return Inertia::render('Bookings/ShowBooking', [
                 'booking' => $this->getThisBooking($booking)
             ]);
         } else {
