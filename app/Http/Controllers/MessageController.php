@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -82,7 +83,7 @@ class MessageController extends Controller
         if ($response->allowed()) {
             $message->flagged = !$message->flagged;
             $message->save();
-            return redirect('/messages/flagged');
+            return Redirect::route('flaggedMessages');
         } else {
             return back();
         }
@@ -103,7 +104,7 @@ class MessageController extends Controller
         ]);
 
         Message::create($attributes);
-        return redirect('/messages/sent');
+        return Redirect::route('sentMessages');
     }
 
     /**

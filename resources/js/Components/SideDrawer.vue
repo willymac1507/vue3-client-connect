@@ -7,17 +7,28 @@ import {
     TransitionRoot,
 } from "@headlessui/vue";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 
-defineProps({
+const props = defineProps({
     title: String,
+    open: Boolean,
 });
 
 let previewOpen = ref(false);
+
+watchEffect(() => {
+    previewOpen = props.open;
+});
 </script>
 <template>
     <TransitionRoot :show="previewOpen" as="template">
-        <Dialog class="relative z-10" @close="previewOpen = false">
+        <Dialog
+            class="relative z-10"
+            @close="
+                $emit('closePreview');
+                previewOpen = false;
+            "
+        >
             <TransitionChild
                 as="template"
                 enter="ease-in-out duration-500"
@@ -64,7 +75,10 @@ let previewOpen = ref(false);
                                                 <button
                                                     class="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
                                                     type="button"
-                                                    @click="previewOpen = false"
+                                                    @click="
+                                                        $emit('closePreview');
+                                                        previewOpen = false;
+                                                    "
                                                 >
                                                     <span
                                                         class="absolute -inset-2.5"
