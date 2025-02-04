@@ -2,10 +2,10 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SlotsController;
 use App\Http\Controllers\SuperController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsAdmin;
@@ -43,7 +43,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', IsStudent::class])->group(function () {
-    Route::get('/slots/edit', [SlotsController::class, 'edit'])->name('slots.edit');
+    Route::get('/calendar/show', [CalendarController::class, 'show'])->name('calendar.show');
+    Route::post('/calendar/store', [CalendarController::class, 'store'])->name('calendar.store');
 });
 
 Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
