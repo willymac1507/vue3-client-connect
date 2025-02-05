@@ -39,7 +39,7 @@ class CalendarController extends Controller
         return Inertia::render('Calendars/Partials/CalendarSetupForm');
     }
 
-    public function show()
+    public function edit()
     {
         return Inertia::render('Calendars/Partials/CalendarSetupForm', [
             'calendar' => Calendar::firstOrCreate(['user_id' => Auth::id()])

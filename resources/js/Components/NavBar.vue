@@ -89,9 +89,15 @@ const page = usePage();
                             </DropdownLink>
                             <DropdownLink
                                 v-if="usePage().props.can['student']"
-                                :href="route('calendar.show')"
+                                :href="route('calendar.edit')"
                             >
                                 Availability
+                            </DropdownLink>
+                            <DropdownLink
+                                v-if="usePage().props.can['student']"
+                                :href="route('services.edit')"
+                            >
+                                Services
                             </DropdownLink>
                             <DropdownLink
                                 :href="route('logout')"

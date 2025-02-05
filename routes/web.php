@@ -6,6 +6,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SuperController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsAdmin;
@@ -43,8 +44,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', IsStudent::class])->group(function () {
-    Route::get('/calendar/show', [CalendarController::class, 'show'])->name('calendar.show');
+    Route::get('/calendar/edit', [CalendarController::class, 'edit'])->name('calendar.edit');
     Route::post('/calendar/store', [CalendarController::class, 'store'])->name('calendar.store');
+});
+
+Route::middleware(['auth', IsStudent::class])->group(function () {
+    Route::get('/services/edit', [ServiceController::class, 'edit'])->name('services.edit');
 });
 
 Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {

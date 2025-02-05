@@ -64,6 +64,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function services(): BelongsToMany
+    {
+        return $this->belongsToMany(Service::class, 'service_student', 'student_id');
+
+    }
+
     public function clientContacts(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'client_student', 'student_id', 'client_id');
