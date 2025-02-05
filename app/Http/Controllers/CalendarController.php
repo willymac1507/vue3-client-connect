@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 class CalendarController extends Controller
 {
-    public function store(Request $request)
+    public function store(Calendar $calendar, Request $request)
     {
         $attributes = $request->validate([
             'monStart' => 'nullable',
@@ -28,7 +28,8 @@ class CalendarController extends Controller
             'sunEnd' => 'required_if:sunStart, !null',
         ]);
         $attributes['user_id'] = Auth::id();
-        Calendar::updateOrCreate(['user_id' => Auth::id()], $attributes);
+        $calendar->update($attributes);
+        return redirect('/')->with('success', 'Your availability has been updated.');
 
 
     }

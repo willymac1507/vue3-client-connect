@@ -43,8 +43,11 @@ class HandleInertiaRequests extends Middleware
                 'admin' => Auth::user()->can('admin', User::class),
                 'superAdmin' => Auth::user()->can('superAdmin', User::class),
                 'student' => Auth::user()->can('student', User::class),
-            ] : null
-
+            ] : null,
+            'flash' => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error')
+            ],
         ];
 
     }

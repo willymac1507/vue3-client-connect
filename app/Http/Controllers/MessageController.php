@@ -104,7 +104,7 @@ class MessageController extends Controller
         ]);
 
         Message::create($attributes);
-        return Redirect::route('sentMessages');
+        return Redirect::route('sentMessages')->with('success', 'Your message has been sent.');
     }
 
     /**

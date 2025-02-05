@@ -1,11 +1,17 @@
 <!--suppress HtmlRequiredTitleElement -->
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, usePage } from "@inertiajs/vue3";
+import { ref } from "vue";
 
 defineProps({
     title: String,
 });
+
+let showFlash = ref(usePage().props.flash.success);
+setTimeout(() => {
+    showFlash.value = false;
+}, 2000);
 </script>
 <template>
     <Head :title="title" />
@@ -18,7 +24,16 @@ defineProps({
                 <slot name="otherContent" />
             </div>
         </template>
-        <div class="py-12">
+        <Transition></Transition>
+        <div class="py-12 relative">
+            <Transition>
+                <div
+                    v-show="showFlash"
+                    class="w-screen absolute top-0 left-0 text-center bg-green-500 px-8 font-bold text-white"
+                >
+                    {{ usePage().props.flash.success }}
+                </div>
+            </Transition>
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <slot />
             </div>

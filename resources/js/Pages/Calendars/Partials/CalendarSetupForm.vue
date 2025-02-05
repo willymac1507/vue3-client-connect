@@ -2,7 +2,6 @@
 import { useForm } from "@inertiajs/vue3";
 import { addMinutes, format } from "date-fns";
 import PageLayout from "@/Components/PageLayout.vue";
-import PageSection from "@/Components/PageSection.vue";
 import { reactive, ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
@@ -119,9 +118,18 @@ function addTimeSlots() {
 </script>
 <template>
     <PageLayout title="Calendar">
-        <PageSection title="Weekly Work Pattern">
+        <!--        <PageSection title="Weekly Work Pattern">-->
+        <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+            <header>
+                <h2 class="text-lg font-medium text-gray-900">
+                    Weekly Work Pattern
+                </h2>
+                <p class="mt-1 text-sm text-gray-600">
+                    Update your availability to appear in client searches.
+                </p>
+            </header>
             <form
-                class="flex flex-col w-1/2 mx-auto gap-4"
+                class="mt-8 flex flex-col w-1/2 mr-auto gap-4"
                 @submit.prevent="form.post('/calendar/store')"
             >
                 <div
@@ -176,13 +184,14 @@ function addTimeSlots() {
                         </select>
                     </div>
                 </div>
-                <div class="ml-auto">
+                <div class="mt-8 mr-auto">
                     <PrimaryButton :disabled="form.processing"
                         >Save
                     </PrimaryButton>
                 </div>
             </form>
-        </PageSection>
+        </div>
+        <!--        </PageSection>-->
     </PageLayout>
 </template>
 <style />
