@@ -24,6 +24,11 @@ class UserPolicy
         return $user->hasRole('student');
     }
 
+    public function search(User $user): bool
+    {
+        return $user->hasRole('client');
+    }
+
     /**
      * Determine whether the user can view the model.
      */

@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('town');
             $table->string('postcode');
             $table->string('country');
+            $table->float('lat');
+            $table->float('lng');
             $table->string('email');
             $table->string('telephone');
             $table->string('contact');

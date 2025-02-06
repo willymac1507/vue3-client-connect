@@ -49,6 +49,13 @@ const page = usePage();
                         Messages
                     </NavLink>
                     <NavLink
+                        v-if="usePage().props.can['search']"
+                        :active="route().current('search.search')"
+                        :href="route('search.search')"
+                    >
+                        Search
+                    </NavLink>
+                    <NavLink
                         :active="route().current('allBookings')"
                         :href="route('allBookings')"
                     >

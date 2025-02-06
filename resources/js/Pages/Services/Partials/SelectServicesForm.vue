@@ -1,49 +1,42 @@
 <script setup>
 import { useForm, usePage } from "@inertiajs/vue3";
-import { reactive } from "vue";
+import Multiselect from "vue-multiselect";
+import { ref } from "vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 defineProps({
     services: Object,
 });
 
+let value = ref([]);
+
 const userId = usePage().props.auth.user.id;
-let myServices = reactive([]);
 
 const form = useForm({
     user_id: userId ?? null,
-    services: myServices,
+    services: [],
 });
-
-function changeChecked(e) {
-    if (e.target.checked) {
-        myServices.push({
-            id: e.target.value,
-            offered: true,
-        });
-    }
-}
 </script>
 <template>
     <form
         class="mt-6 space-y-6"
-        @submit.prevent="form.patch(route('services.update'))"
+        @submit.prevent="form.post(route('services.update'))"
     >
         <div class="flex flex-col gap-y-4 max-w-xl">
-            <div
-                v-for="(service, index) in services"
-                :key="index"
-                class="flex justify-between basis-1/4"
-            >
-                <label :for="`service${index}`">{{ service.service }} </label>
-                <input
-                    id="`service${index}`"
-                    :value="service.id"
-                    class="ml-2 rounded shadow"
-                    type="checkbox"
-                    @change="changeChecked"
-                />
-            </div>
+            <multiselect
+                v-model="form.services"
+                :clear-on-select="false"
+                :close-on-select="false"
+                :modelValue="services"
+                :multiple="true"
+                :options="services"
+                aria-label="pick a value"
+                label="service"
+                placeholder="Pick a value"
+                track-by="service"
+            ></multiselect>
         </div>
+        <PrimaryButton type="submit">Save</PrimaryButton>
     </form>
 </template>
-<style />
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

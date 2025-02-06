@@ -6,10 +6,12 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SuperController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsClient;
 use App\Http\Middleware\IsStudent;
 use App\Http\Middleware\IsSuper;
 use Illuminate\Support\Facades\Route;
@@ -48,8 +50,13 @@ Route::middleware(['auth', IsStudent::class])->group(function () {
     Route::post('/calendar/store', [CalendarController::class, 'store'])->name('calendar.store');
 });
 
+Route::middleware(['auth', IsClient::class])->group(function () {
+    Route::get('/search', [SearchController::class, 'search'])->name('search.search');
+});
+
 Route::middleware(['auth', IsStudent::class])->group(function () {
     Route::get('/services/edit', [ServiceController::class, 'edit'])->name('services.edit');
+    Route::post('/services/update', [ServiceController::class, 'update'])->name('services.update');
 });
 
 Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {

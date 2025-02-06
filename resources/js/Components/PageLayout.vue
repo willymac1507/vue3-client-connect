@@ -34,7 +34,9 @@ setTimeout(() => {
                     {{ usePage().props.flash.success }}
                 </div>
             </Transition>
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div
+                class="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8 gap-y-4"
+            >
                 <slot />
             </div>
         </div>
