@@ -14,27 +14,64 @@ class UserPolicy
         return $user->hasRole('superUser');
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
     public function admin(User $user): bool
     {
         return $user->hasRole('admin');
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
     public function student(User $user): bool
     {
         return $user->hasRole('student');
     }
 
+    /**
+     * Determine whether the user can search for a booking
+     * @param User $user
+     * @return bool
+     */
     public function search(User $user): bool
     {
         return $user->hasRole('client');
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view all user models.
+     * @param User $user
+     * @return bool
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->hasRole('superUser');
+    }
+
+    /**
+     * Determine whether the user can view the user model.
+     * @param User $user
+     * @param User $model
+     * @return bool
+     */
+    public function view(User $user, User $model): bool
+    {
+        return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin')) || $user->hasRole('superUser');
+    }
+
+    /**
+     * Determine whether the user can edit the user model.
+     * @param User $user
+     * @param User $model
+     * @return bool
      */
     public function edit(User $user, User $model): bool
     {
-        return $user->organisation_id === $model->organisation_id;
+        return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin')) || $user->hasRole('superUser');
     }
 
     /**
@@ -42,7 +79,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return false;
+        return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin')) || $user->hasRole('superUser');
     }
 
     /**

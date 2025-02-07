@@ -1,7 +1,7 @@
 <!--suppress HtmlRequiredTitleElement -->
 <script setup>
 import PageSection from "@/Components/PageSection.vue";
-import DashCalendar from "@/Pages/User/Partials/DashCalendar.vue";
+import DashCalendar from "@/Pages/Users/Partials/DashCalendar.vue";
 import PageLayout from "@/Components/PageLayout.vue";
 
 defineProps({

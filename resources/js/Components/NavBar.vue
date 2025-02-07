@@ -30,12 +30,52 @@ const page = usePage();
                     >
                         Dashboard
                     </NavLink>
-                    <NavLink
+                    <!--                    <NavLink-->
+                    <!--                        v-if="usePage().props.can['superAdmin']"-->
+                    <!--                        :active="route().current('superAdmin')"-->
+                    <!--                        :href="route('superAdmin')"-->
+                    <!--                        >Super Admin-->
+                    <!--                    </NavLink>-->
+                    <div
                         v-if="usePage().props.can['superAdmin']"
-                        :active="route().current('superAdmin')"
-                        :href="route('superAdmin')"
-                        >Super Admin
-                    </NavLink>
+                        class="inline-flex items-center pt-0.5 border-b-2 border-transparent hover:border-gray-300"
+                    >
+                        <Dropdown align="right" width="48">
+                            <template #trigger>
+                                <span class="inline-flex rounded-md">
+                                    <button
+                                        class="inline-flex items-center bg-white text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                        type="button"
+                                    >
+                                        Super Admin
+
+                                        <svg
+                                            class="-me-0.5 ms-2 h-4 w-4"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                clip-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                fill-rule="evenodd"
+                                            />
+                                        </svg>
+                                    </button>
+                                </span>
+                            </template>
+                            <template #content>
+                                <DropdownLink :href="route('super.dashboard')">
+                                    Dashboard
+                                </DropdownLink>
+                                <DropdownLink :href="route('organisations')">
+                                    Organisations
+                                </DropdownLink>
+                                <DropdownLink href="#"> Users</DropdownLink>
+                                <DropdownLink href="#"> Bookings</DropdownLink>
+                            </template>
+                        </Dropdown>
+                    </div>
                     <NavLink
                         v-if="usePage().props.can['admin']"
                         :active="route().current('admin')"
@@ -65,7 +105,7 @@ const page = usePage();
             </div>
             <div class="hidden sm:ms-6 sm:flex sm:items-center">
                 <!-- Settings Dropdown -->
-                <div class="relative ms-3">
+                <div class="relative ms-3 pt-1">
                     <Dropdown align="right" width="48">
                         <template #trigger>
                             <span class="inline-flex rounded-md">

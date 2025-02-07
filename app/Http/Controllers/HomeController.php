@@ -11,7 +11,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        return Inertia::render('User/Dashboard', [
+        return Inertia::render('Users/Dashboard', [
             'bookings' => $this->getAllBookings()
         ]);
     }

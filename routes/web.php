@@ -5,22 +5,18 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SuperController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsAdmin;
-use App\Http\Middleware\IsClient;
-use App\Http\Middleware\IsStudent;
-use App\Http\Middleware\IsSuper;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
-
-    Route::get('/admin', [AdminController::class, 'index'])->middleware('can:admin, App\Models\User')->name('admin');
-});
+})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/messages/all', [MessageController::class, 'index'])->name('allMessages');
@@ -37,35 +33,44 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/bookings/all', [BookingController::class, 'index'])->name('allBookings');
     Route::get('/booking/{booking:id}/show', [BookingController::class, 'show'])->name('showBooking');
-});
+})->name('bookings');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+})->name('profile');
 
-Route::middleware(['auth', IsStudent::class])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/calendar/edit', [CalendarController::class, 'edit'])->name('calendar.edit');
     Route::post('/calendar/store', [CalendarController::class, 'store'])->name('calendar.store');
-});
+})->name('calendar');
 
-Route::middleware(['auth', IsClient::class])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/search', [SearchController::class, 'search'])->name('search.search');
-});
+})->name('search');
 
-Route::middleware(['auth', IsStudent::class])->group(function () {
+Route::middleware('auth')->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/user/{user:id}/show', [UserController::class, 'show'])->name('user.show');
+})->name('users');
+
+Route::middleware('auth')->group(function () {
     Route::get('/services/edit', [ServiceController::class, 'edit'])->name('services.edit');
     Route::post('/services/update', [ServiceController::class, 'update'])->name('services.update');
-});
+})->name('services');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/organisations', [OrganisationController::class, 'index'])->name('organisations');
+    Route::get('/organisation/{organisation:id}/show', [OrganisationController::class, 'show'])->name('organisation.show');
+})->name('organisations');
 
 Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 });
 
-Route::middleware(['auth', 'verified', IsSuper::class])->group(function () {
-    Route::get('/super', [SuperController::class, 'index'])->name('superAdmin');
-    Route::get('/super/users', [UserController::class, 'index'])->name('superUsers');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/super/dashboard', [SuperController::class, 'index'])->name('super.dashboard');
 });
 
 require __DIR__ . '/auth.php';

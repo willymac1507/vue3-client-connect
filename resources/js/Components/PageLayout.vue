@@ -8,7 +8,7 @@ defineProps({
     title: String,
 });
 
-let showFlash = ref(usePage().props.flash.success);
+let showFlash = ref(usePage().props.flash);
 setTimeout(() => {
     showFlash.value = false;
 }, 2000);
@@ -29,9 +29,17 @@ setTimeout(() => {
             <Transition>
                 <div
                     v-show="showFlash"
-                    class="w-screen absolute top-0 left-0 text-center bg-green-500 px-8 font-bold text-white"
+                    class="w-screen absolute top-0 left-0 text-center px-8 font-bold text-white"
                 >
-                    {{ usePage().props.flash.success }}
+                    <div
+                        v-if="usePage().props.flash.success"
+                        class="bg-green-500"
+                    >
+                        {{ usePage().props.flash.success }}
+                    </div>
+                    <div v-if="usePage().props.flash.error" class="bg-red-500">
+                        {{ usePage().props.flash.error }}
+                    </div>
                 </div>
             </Transition>
             <div
