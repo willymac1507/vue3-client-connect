@@ -91,7 +91,7 @@ function clicked(org) {
             <GoogleMap
                 :center="center"
                 :zoom="12"
-                api-key="AIzaSyD02ckH2mbSZuByAY83vcoT1H-PFOPnQIw"
+                api-key=""
                 mapId="475b824d246ce63a"
                 style="width: 100%; height: 500px"
             >
