@@ -9,6 +9,8 @@ const props = defineProps({
     organisation: Object,
     students: Object,
 });
+const mapsApi = import.meta.env.VITE_MAPS_API_KEY;
+const mapId = import.meta.env.VITE_MAPS_MAPID;
 const center = { lat: props.organisation.lat, lng: props.organisation.lng };
 </script>
 <template>
@@ -97,10 +99,10 @@ const center = { lat: props.organisation.lat, lng: props.organisation.lng };
                                 class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"
                             >
                                 <GoogleMap
+                                    :api-key="mapsApi"
                                     :center="center"
+                                    :map-Id="mapId"
                                     :zoom="12"
-                                    api-key="AIzaSyD02ckH2mbSZuByAY83vcoT1H-PFOPnQIw"
-                                    mapId="475b824d246ce63a"
                                     style="width: 100%; height: 500px"
                                 >
                                     <AdvancedMarker

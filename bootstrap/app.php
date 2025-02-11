@@ -13,12 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(append: [
-            HandleInertiaRequests::class,
-            AddLinkHeadersForPreloadedAssets::class,
-        ]);
-
-        //
+        [
+            $middleware->web(append: [
+                HandleInertiaRequests::class,
+                AddLinkHeadersForPreloadedAssets::class,
+            ]),
+            $middleware->trustHosts(at: ['localhost::8888'])
+        ];
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

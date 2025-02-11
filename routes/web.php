@@ -14,10 +14,18 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * <strong>Dashboard route</strong>
+ * @uses HomeController
+ */
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 })->name('home');
 
+/**
+ * <strong>Messages routes</strong>
+ * @uses MessageController
+ */
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/messages/all', [MessageController::class, 'index'])->name('allMessages');
     Route::get('/messages/unread', [MessageController::class, 'unread'])->name('unreadMessages');
@@ -30,45 +38,81 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/messages', [MessageController::class, 'store'])->name('storeMessage');
 })->name('messages');
 
+/**
+ * <strong>Bookings routes</strong>
+ * @uses BookingController
+ */
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/bookings/all', [BookingController::class, 'index'])->name('allBookings');
     Route::get('/booking/{booking:id}/show', [BookingController::class, 'show'])->name('showBooking');
 })->name('bookings');
 
+/**
+ * <strong>Profile routes</strong>
+ * @uses ProfileController
+ */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 })->name('profile');
 
+/**
+ * <strong>Calendar routes</strong>
+ * @uses CalendarController
+ */
 Route::middleware('auth')->group(function () {
     Route::get('/calendar/edit', [CalendarController::class, 'edit'])->name('calendar.edit');
     Route::post('/calendar/store', [CalendarController::class, 'store'])->name('calendar.store');
 })->name('calendar');
 
+/**
+ * <strong>Search routes</strong>
+ * @uses SearchController
+ */
 Route::middleware('auth')->group(function () {
     Route::get('/search', [SearchController::class, 'search'])->name('search.search');
 })->name('search');
 
+/**
+ * <strong>Users routes</strong>
+ * @uses UserController
+ */
 Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::get('/user/{user:id}/show', [UserController::class, 'show'])->name('user.show');
 })->name('users');
 
+/**
+ * <strong>Services routes</strong>
+ * @uses ServiceController
+ */
 Route::middleware('auth')->group(function () {
     Route::get('/services/edit', [ServiceController::class, 'edit'])->name('services.edit');
     Route::post('/services/update', [ServiceController::class, 'update'])->name('services.update');
 })->name('services');
 
+/**
+ * <strong>Organisations routes</strong>
+ * @uses OrganisationController
+ */
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/organisations', [OrganisationController::class, 'index'])->name('organisations');
     Route::get('/organisation/{organisation:id}/show', [OrganisationController::class, 'show'])->name('organisation.show');
 })->name('organisations');
 
+/**
+ * <strong>Admin routes</strong>
+ * @uses AdminController
+ */
 Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 });
 
+/**
+ * <strong>Superuser routes</strong>
+ * @uses SuperController
+ */
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/super/dashboard', [SuperController::class, 'index'])->name('super.dashboard');
 });

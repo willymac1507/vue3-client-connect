@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use App\Models\User;
+use App\Notifications\MessageReceived;
 use App\Traits\Contacts;
 use App\Traits\Messages;
 use Illuminate\Foundation\Application;
@@ -96,6 +98,7 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
+        $recipient = User::find($request->recipient_id);
         $attributes = $request->validate([
             'sender_id' => 'required',
             'recipient_id' => 'required',
@@ -104,6 +107,7 @@ class MessageController extends Controller
         ]);
 
         Message::create($attributes);
+        $recipient->notify(new MessageReceived());
         return Redirect::route('sentMessages')->with('success', 'Your message has been sent.');
     }
 
