@@ -12,6 +12,8 @@ class Organisation extends Model
     /** @use HasFactory<OrganisationFactory> */
     use HasFactory;
 
+    public $guarded = false;
+
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

@@ -99,6 +99,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/organisations', [OrganisationController::class, 'index'])->name('organisations');
     Route::get('/organisation/{organisation:id}/show', [OrganisationController::class, 'show'])->name('organisation.show');
+    Route::get('/organisations/create', [OrganisationController::class, 'create'])->name('organisations.create');
+    Route::post('/organisations', [OrganisationController::class, 'store'])->name('organisations.store');
 })->name('organisations');
 
 /**
