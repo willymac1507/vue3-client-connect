@@ -1,5 +1,5 @@
 <script setup>
-import { useForm } from "@inertiajs/vue3";
+import { router, useForm } from "@inertiajs/vue3";
 import ValidationError from "@/Pages/Messages/ValidationError.vue";
 import PageLayout from "@/Components/PageLayout.vue";
 import PageCard from "@/Components/PageCard.vue";
@@ -7,30 +7,39 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 const props = defineProps({
+    organisation: Object,
     errors: Object,
 });
 
 let form = useForm({
-    name: null,
-    address1: null,
-    address2: null,
-    town: null,
-    postcode: null,
-    country: "United Kingdom",
-    email: null,
-    telephone: null,
-    contact: null,
-    lat: null,
-    lng: null,
+    name: props.organisation.name,
+    address1: props.organisation.address1,
+    address2: props.organisation.address2,
+    town: props.organisation.town,
+    postcode: props.organisation.postcode,
+    country: props.organisation.country,
+    email: props.organisation.email,
+    telephone: props.organisation.telephone,
+    contact: props.organisation.contact,
+    lat: props.organisation.lat,
+    lng: props.organisation.lng,
 });
+
+function saveEdit() {
+    form.patch(`/organisation/${props.organisation.id}/update`);
+}
+
+function cancelEdit() {
+    router.visit(`/organisation/${props.organisation.id}/show`);
+}
 </script>
 <template>
     <PageLayout title="Organisations">
         <PageCard
-            description="Create new organisation record."
-            title="New Organisation"
+            description="Edit and update organisation record."
+            title="Edit Organisation"
         >
-            <form @submit.prevent="form.post('/organisations')">
+            <form @submit.prevent="saveEdit()">
                 <input v-model="form.lat" name="lat" type="hidden" />
                 <input v-model="form.lng" name="lng" type="hidden" />
                 <div class="space-y-12">
@@ -187,12 +196,12 @@ let form = useForm({
                     </div>
                 </div>
                 <div class="mt-2 flex items-center justify-end gap-x-6">
-                    <SecondaryButton @click="form.reset()"
-                        >Cancel</SecondaryButton
-                    >
+                    <SecondaryButton @click="cancelEdit()"
+                        >Cancel
+                    </SecondaryButton>
                     <PrimaryButton :disabled="form.processing" type="submit"
-                        >save</PrimaryButton
-                    >
+                        >save
+                    </PrimaryButton>
                 </div>
             </form>
         </PageCard>

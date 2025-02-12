@@ -34,25 +34,61 @@ class OrganisationController extends Controller
         }
     }
 
+    public function edit(Organisation $organisation)
+    {
+        $response = Gate::inspect('update', $organisation);
+
+        if ($response->allowed()) {
+            return Inertia::render('Organisations/Edit', ['organisation' => $organisation, 'students' => $organisation->users]);
+        } else {
+            return back()->with('error', 'You are not authorised to edit that organisation.');
+        }
+    }
+
+    public function update(Organisation $organisation, Request $request)
+    {
+        $attributes = $this->validateForm($request);
+        if (!$attributes['lat'] || !$attributes['lng']) {
+            $latLong = $this->getLatLong($attributes['postcode']);
+            $attributes['lat'] = $latLong[0];
+            $attributes['lng'] = $latLong[1];
+        }
+        $organisation->fill($attributes)->save();
+        return Redirect::route('organisation.show', $organisation)->with('success', 'The organisation has been updated.');
+    }
+
+    private function validateForm($data)
+    {
+        return $data->validate([
+            'name' => 'required',
+            'contact' => 'required',
+            'email' => 'required',
+            'telephone' => 'required',
+            'address1' => 'required',
+            'address2' => 'nullable',
+            'town' => 'required',
+            'postcode' => ['required', new ValidPostcode],
+            'country' => 'required',
+            'lat' => 'nullable',
+            'lng' => 'nullable'
+        ]);
+    }
+
+    private function getLatLong($postcode)
+    {
+        $postcodeData = Http::get('https://api.postcodes.io/postcodes/' . $postcode);
+        return [$postcodeData->json('result.latitude'), $postcodeData->json('result.longitude')];
+    }
+
     public function store(Request $request)
     {
         $response = Gate::inspect('create', Organisation::class);
 
         if ($response->allowed()) {
-            $attributes = $request->validate([
-                'name' => 'required',
-                'contact' => 'required',
-                'email' => 'required',
-                'telephone' => 'required',
-                'address1' => 'required',
-                'address2' => 'nullable',
-                'town' => 'required',
-                'postcode' => ['required', new ValidPostcode],
-                'country' => 'required'
-            ]);
-            $postcodeData = Http::get('https://api.postcodes.io/postcodes/' . $attributes['postcode']);
-            $attributes['lat'] = $postcodeData->json('result.latitude');
-            $attributes['lng'] = $postcodeData->json('result.longitude');
+            $attributes = $this->validateForm($request);
+            $latLong = $this->getLatLong($attributes['postcode']);
+            $attributes['lat'] = $latLong[0];
+            $attributes['lng'] = $latLong[1];
             Organisation::create($attributes);
             return Redirect::route('organisations')->with('success', 'A new organisation has been created.');
         }

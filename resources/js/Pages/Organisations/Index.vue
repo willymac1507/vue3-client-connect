@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from "vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import PageLayout from "@/Components/PageLayout.vue";
 import PageCard from "@/Components/PageCard.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -25,6 +25,10 @@ const indeterminate = computed(
 let props = defineProps({
     organisations: Object,
 });
+
+function createOrg() {
+    router.visit("/organisations/create");
+}
 </script>
 <template>
     <PageLayout title="Organisations">
@@ -34,7 +38,9 @@ let props = defineProps({
         >
             <template #otherContent>
                 <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                    <PrimaryButton>Add Organisation</PrimaryButton>
+                    <PrimaryButton @click="createOrg()"
+                        >Add Organisation</PrimaryButton
+                    >
                 </div>
             </template>
             <div class="px-4 sm:px-6 lg:px-8">

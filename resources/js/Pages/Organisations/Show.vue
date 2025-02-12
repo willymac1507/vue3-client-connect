@@ -2,7 +2,7 @@
 import PageLayout from "@/Components/PageLayout.vue";
 import PageCard from "@/Components/PageCard.vue";
 import { AdvancedMarker, GoogleMap } from "vue3-google-map";
-import { Link } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const props = defineProps({
@@ -12,6 +12,10 @@ const props = defineProps({
 const mapsApi = import.meta.env.VITE_MAPS_API_KEY;
 const mapId = import.meta.env.VITE_MAPS_MAPID;
 const center = { lat: props.organisation.lat, lng: props.organisation.lng };
+
+function editOrg() {
+    router.visit(`/organisation/${props.organisation.id}/edit`);
+}
 </script>
 <template>
     <PageLayout title="Organisation">
@@ -21,7 +25,7 @@ const center = { lat: props.organisation.lat, lng: props.organisation.lng };
                 title="Organisation Details"
             >
                 <template #otherContent>
-                    <PrimaryButton>Edit</PrimaryButton>
+                    <PrimaryButton @click="editOrg()">Edit </PrimaryButton>
                 </template>
                 <div class="border-t border-gray-100">
                     <dl class="divide-y divide-gray-100">
