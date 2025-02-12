@@ -102,6 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/organisations/create', [OrganisationController::class, 'create'])->name('organisation.create');
     Route::get('/organisation/{organisation:id}/edit', [OrganisationController::class, 'edit'])->name('organisation.edit');
     Route::post('/organisations', [OrganisationController::class, 'store'])->name('organisation.store');
+    Route::post('/organisations/delete', [OrganisationController::class, 'destroy'])->name('organisations.destroy');
     Route::patch('/organisation/{organisation:id}/update', [OrganisationController::class, 'update'])->name('organisation.update');
 })->name('organisations');
 

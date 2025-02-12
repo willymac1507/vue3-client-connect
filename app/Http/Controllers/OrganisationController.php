@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUndefinedMethodInspection */
 
 namespace App\Http\Controllers;
 
@@ -12,6 +12,7 @@ use Inertia\Inertia;
 
 class OrganisationController extends Controller
 {
+
     public function index()
     {
         $response = Gate::inspect('viewAny', Organisation::class);
@@ -80,6 +81,12 @@ class OrganisationController extends Controller
         return [$postcodeData->json('result.latitude'), $postcodeData->json('result.longitude')];
     }
 
+    public function destroy(Request $request)
+    {
+        Organisation::destroy($request->organisations);
+        return to_route('organisations')->withSuccess('The organisations have been deleted.');
+    }
+
     public function store(Request $request)
     {
         $response = Gate::inspect('create', Organisation::class);
@@ -92,7 +99,7 @@ class OrganisationController extends Controller
             Organisation::create($attributes);
             return Redirect::route('organisations')->with('success', 'A new organisation has been created.');
         }
-        return back()->with('error', 'You are not authorised to create organisations.');
+        return to_route('organisations')->with('error', 'You are not authorised to create organisations.');
     }
 
     public function create()

@@ -7,7 +7,7 @@ import { ref } from "vue";
 defineProps({
     title: String,
 });
-
+console.log(usePage().props);
 let showFlash = ref(usePage().props.flash);
 setTimeout(() => {
     showFlash.value = false;

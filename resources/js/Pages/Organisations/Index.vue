@@ -4,34 +4,31 @@ import { Link, router } from "@inertiajs/vue3";
 import PageLayout from "@/Components/PageLayout.vue";
 import PageCard from "@/Components/PageCard.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-
-const people = [
-    {
-        name: "Lindsay Walton",
-        title: "Front-end Developer",
-        email: "lindsay.walton@example.com",
-        role: "Member",
-    },
-    // More people...
-];
-
-const selectedOrgs = ref([]);
-const indeterminate = computed(
-    () =>
-        selectedOrgs.value.length > 0 &&
-        selectedOrgs.value.length < people.length,
-);
+import DangerButton from "@/Components/DangerButton.vue";
+import { now } from "lodash";
 
 let props = defineProps({
     organisations: Object,
 });
+const selectedOrgs = ref([]);
+const indeterminate = computed(
+    () =>
+        selectedOrgs.value.length > 0 &&
+        selectedOrgs.value.length < props.organisations.length,
+);
 
 function createOrg() {
     router.visit("/organisations/create");
 }
+
+function deleteOrgs() {
+    let orgsToDelete = selectedOrgs.value;
+    selectedOrgs.value = [];
+    router.post("/organisations/delete", { organisations: orgsToDelete });
+}
 </script>
 <template>
-    <PageLayout title="Organisations">
+    <PageLayout :key="now()" title="Organisations">
         <PageCard
             description="A list of all the organisations registered."
             title="Organisations"
@@ -39,8 +36,8 @@ function createOrg() {
             <template #otherContent>
                 <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
                     <PrimaryButton @click="createOrg()"
-                        >Add Organisation</PrimaryButton
-                    >
+                        >Add Organisation
+                    </PrimaryButton>
                 </div>
             </template>
             <div class="px-4 sm:px-6 lg:px-8">
@@ -54,18 +51,9 @@ function createOrg() {
                                     v-if="selectedOrgs.length > 0"
                                     class="absolute top-0 left-14 flex h-12 items-center space-x-3 bg-white sm:left-12"
                                 >
-                                    <button
-                                        class="inline-flex items-center rounded-sm bg-white px-2 py-1 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                                        type="button"
-                                    >
-                                        Bulk edit
-                                    </button>
-                                    <button
-                                        class="inline-flex items-center rounded-sm bg-white px-2 py-1 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                                        type="button"
-                                    >
-                                        Delete all
-                                    </button>
+                                    <DangerButton @click="deleteOrgs()">
+                                        Delete all selected
+                                    </DangerButton>
                                 </div>
                                 <table
                                     class="min-w-full table-fixed divide-y divide-gray-300"
@@ -96,7 +84,7 @@ function createOrg() {
                                                                     .checked
                                                                     ? organisations.map(
                                                                           (o) =>
-                                                                              o.email,
+                                                                              o.id,
                                                                       )
                                                                     : []
                                                         "
@@ -166,9 +154,8 @@ function createOrg() {
                                             ) in organisations"
                                             :key="orgIdx"
                                             :class="[
-                                                selectedOrgs.includes(
-                                                    org.email,
-                                                ) && 'bg-gray-50',
+                                                selectedOrgs.includes(org.id) &&
+                                                    'bg-gray-50',
                                             ]"
                                         >
                                             <td
@@ -177,7 +164,7 @@ function createOrg() {
                                                 <div
                                                     v-if="
                                                         selectedOrgs.includes(
-                                                            org.email,
+                                                            org.id,
                                                         )
                                                     "
                                                     class="absolute inset-y-0 left-0 w-0.5 bg-indigo-600"
@@ -187,7 +174,7 @@ function createOrg() {
                                                 >
                                                     <input
                                                         v-model="selectedOrgs"
-                                                        :value="org.email"
+                                                        :value="org.id"
                                                         class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                                                         type="checkbox"
                                                     />
