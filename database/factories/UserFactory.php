@@ -41,6 +41,9 @@ class UserFactory extends Factory
     {
         return $this->afterCreating(function (User $user) {
             $user->roles()->attach(4);
+            if ($user->organisation_id) {
+                $user->roles()->attach(3);
+            }
         });
     }
 

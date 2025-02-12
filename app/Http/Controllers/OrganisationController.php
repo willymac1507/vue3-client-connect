@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organisation;
+use App\Models\User;
 use App\Rules\ValidPostcode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -29,7 +30,8 @@ class OrganisationController extends Controller
         $response = Gate::inspect('view', $organisation);
 
         if ($response->allowed()) {
-            return Inertia::render('Organisations/Show', ['organisation' => $organisation, 'students' => $organisation->users]);
+            $users = User::where('organisation_id', $organisation->id)->with('roles')->get();
+            return Inertia::render('Organisations/Show', ['organisation' => $organisation, 'students' => $users],);
         } else {
             return back()->with('error', 'You are not authorised to view that page.');
         }
@@ -40,7 +42,7 @@ class OrganisationController extends Controller
         $response = Gate::inspect('update', $organisation);
 
         if ($response->allowed()) {
-            return Inertia::render('Organisations/Edit', ['organisation' => $organisation, 'students' => $organisation->users]);
+            return Inertia::render('Organisations/Edit', ['organisation' => $organisation, 'students' => $organisation->users()]);
         } else {
             return back()->with('error', 'You are not authorised to edit that organisation.');
         }
@@ -96,7 +98,15 @@ class OrganisationController extends Controller
             $latLong = $this->getLatLong($attributes['postcode']);
             $attributes['lat'] = $latLong[0];
             $attributes['lng'] = $latLong[1];
-            Organisation::create($attributes);
+            $org = Organisation::create($attributes);
+            $user = [
+                'name' => $attributes['contact'],
+                'email' => $attributes['email'],
+                'password' => fake()->password,
+                'organisation_id' => $org->id,
+            ];
+            $admin = User::create($user);
+            $admin->roles()->attach([2, 4]);
             return Redirect::route('organisations')->with('success', 'A new organisation has been created.');
         }
         return to_route('organisations')->with('error', 'You are not authorised to create organisations.');

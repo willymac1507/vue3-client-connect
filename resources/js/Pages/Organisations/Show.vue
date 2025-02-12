@@ -8,6 +8,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 const props = defineProps({
     organisation: Object,
     students: Object,
+    roles: Object,
 });
 const mapsApi = import.meta.env.VITE_MAPS_API_KEY;
 const mapId = import.meta.env.VITE_MAPS_MAPID;
@@ -25,7 +26,7 @@ function editOrg() {
                 title="Organisation Details"
             >
                 <template #otherContent>
-                    <PrimaryButton @click="editOrg()">Edit </PrimaryButton>
+                    <PrimaryButton @click="editOrg()">Edit</PrimaryButton>
                 </template>
                 <div class="border-t border-gray-100">
                     <dl class="divide-y divide-gray-100">
@@ -142,6 +143,25 @@ function editOrg() {
                                                 class="ml-4 flex min-w-0 flex-1 gap-2"
                                             >
                                                 <span>{{ student.name }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-x-2">
+                                            <div
+                                                v-for="role in student.roles"
+                                                :class="{
+                                                    'text-green-700 ring-green-600/20 bg-green-50':
+                                                        role.role === 'client',
+                                                    'text-red-700 ring-red-600/20 bg-red-50':
+                                                        role.role === 'student',
+                                                    'text-blue-700 ring-blue-600/20 bg-blue-50':
+                                                        role.role ===
+                                                        'superUser',
+                                                    'text-purple-700 ring-purple-600/20 bg-purple-50':
+                                                        role.role === 'admin',
+                                                }"
+                                                class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                                            >
+                                                {{ role.role }}
                                             </div>
                                         </div>
                                         <div class="ml-4 shrink-0">
