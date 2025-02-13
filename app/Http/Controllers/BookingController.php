@@ -14,7 +14,7 @@ class BookingController extends Controller
     public function index()
     {
         return Inertia::render('Bookings/Index', [
-            'bookings' => $this->getAllBookings()
+            'bookings' => $this->getAllBookings(true)
         ]);
     }
 

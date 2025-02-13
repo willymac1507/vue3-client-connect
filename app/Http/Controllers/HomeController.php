@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function index()
     {
         return Inertia::render('Users/Dashboard', [
-            'bookings' => $this->getAllBookings()
+            'bookings' => $this->getAllBookings(true)
         ]);
     }
 }

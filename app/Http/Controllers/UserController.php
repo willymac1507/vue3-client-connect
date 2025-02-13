@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Traits\Bookings;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
+    use Bookings;
+
     public function index(User $user)
     {
         $response = Gate::inspect('viewAny', User::class);
@@ -34,7 +37,7 @@ class UserController extends Controller
         $response = Gate::inspect('view', $user);
 
         if ($response->allowed()) {
-            return Inertia::render('Users/Show', ['user' => $user, 'roles' => $user->roles]);
+            return Inertia::render('Users/Show', ['user' => $user, 'roles' => $user->roles, 'organisation' => $user->organisation, 'bookingsAsClient' => $this->getAllBookingsForClient($user), 'bookingsAsStudent' => $this->getAllBookingsForStudent($user)]);
         } else {
             return back()->with('error', 'You are not authorised to view that page.');
         }
