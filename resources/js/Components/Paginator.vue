@@ -7,18 +7,19 @@ import {
 import { onUpdated, ref } from "vue";
 
 let props = defineProps({
-    messages: Object,
+    data: Object,
+    type: String,
 });
 
 let links = [];
-const from = props.messages.from;
-const to = props.messages.to;
-const total = props.messages.total;
+const from = props.data.from;
+const to = props.data.to;
+const total = props.data.total;
 let rolling = ref(false);
 const maxPages = 7;
-const totalPages = props.messages.links.length - 2;
+const totalPages = props.data.links.length - 2;
 rolling.value = totalPages > maxPages;
-links = rolling.value ? rollingLinks() : props.messages.links;
+links = rolling.value ? rollingLinks() : props.data.links;
 if (!rolling.value) {
     links.shift();
     links.pop();
@@ -30,8 +31,8 @@ onUpdated(() => {
 
 function rollingLinks() {
     let linkArray = [];
-    let startPage = props.messages.current_page - 3;
-    let endPage = props.messages.current_page + 3;
+    let startPage = props.data.current_page - 3;
+    let endPage = props.data.current_page + 3;
     if (startPage < 1) {
         endPage += Math.abs(startPage) + 1;
         startPage = 1;
@@ -42,9 +43,9 @@ function rollingLinks() {
     }
     for (let i = startPage; i <= endPage; i++) {
         let content = {
-            active: i === props.messages.current_page,
+            active: i === props.data.current_page,
             label: i,
-            url: `http://localhost:8888/messages/all?page=${i}`,
+            url: `${props.data.path}?page=${i}`,
         };
         linkArray.push(content);
     }
@@ -72,7 +73,7 @@ let last = links.length - 1;
             </Component>
         </div>
         <div
-            v-if="messages.total > 0"
+            v-if="data.total > 0"
             class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
         >
             <div>
@@ -92,13 +93,13 @@ let last = links.length - 1;
                     class="isolate inline-flex -space-x-px rounded-md shadow-xs"
                 >
                     <Component
-                        :is="messages.prev_page_url ? 'Ilink' : 'span'"
+                        :is="data.prev_page_url ? 'Ilink' : 'span'"
                         :class="{
                             'hover:bg-gray-50 text-gray-900':
-                                messages.prev_page_url,
-                            'text-gray-500': !messages.prev_page_url,
+                                data.prev_page_url,
+                            'text-gray-500': !data.prev_page_url,
                         }"
-                        :href="messages.prev_page_url"
+                        :href="data.prev_page_url"
                         aria-label="Previous"
                         class="relative z-10 inline-flex items-center py-2 px-2 rounded-l-md ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
                     >
@@ -129,20 +130,20 @@ let last = links.length - 1;
                         </Ilink>
                     </template>
                     <span
-                        v-if="links[last].label < messages.last_page"
+                        v-if="links[last].label < data.last_page"
                         class="relative z-10 inline-flex items-center py-2 px-2 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 text-gray-500"
                         ><EllipsisHorizontalIcon
                             aria-hidden="true"
                             class="size-5"
                     /></span>
                     <Component
-                        :is="messages.next_page_url ? 'Ilink' : 'span'"
+                        :is="data.next_page_url ? 'Ilink' : 'span'"
                         :class="{
                             'hover:bg-gray-50 text-gray-900':
-                                messages.next_page_url,
-                            'text-gray-500': !messages.next_page_url,
+                                data.next_page_url,
+                            'text-gray-500': !data.next_page_url,
                         }"
-                        :href="messages.next_page_url"
+                        :href="data.next_page_url"
                         aria-label="Next"
                         class="relative z-10 inline-flex items-center py-2 px-2 rounded-r-md ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
                     >
@@ -155,7 +156,7 @@ let last = links.length - 1;
             v-else
             class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
         >
-            No messages
+            No data
         </div>
     </div>
 </template>

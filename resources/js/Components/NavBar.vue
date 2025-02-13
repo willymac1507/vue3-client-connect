@@ -30,12 +30,6 @@ const page = usePage();
                     >
                         Dashboard
                     </NavLink>
-                    <!--                    <NavLink-->
-                    <!--                        v-if="usePage().props.can['superAdmin']"-->
-                    <!--                        :active="route().current('superAdmin')"-->
-                    <!--                        :href="route('superAdmin')"-->
-                    <!--                        >Super Admin-->
-                    <!--                    </NavLink>-->
                     <div
                         v-if="usePage().props.can['superAdmin']"
                         class="inline-flex items-center pt-0.5 border-b-2 border-transparent hover:border-gray-300"
@@ -71,7 +65,9 @@ const page = usePage();
                                 <DropdownLink :href="route('organisations')">
                                     Organisations
                                 </DropdownLink>
-                                <DropdownLink href="#"> Users</DropdownLink>
+                                <DropdownLink :href="route('users')">
+                                    Users</DropdownLink
+                                >
                                 <DropdownLink href="#"> Bookings</DropdownLink>
                             </template>
                         </Dropdown>

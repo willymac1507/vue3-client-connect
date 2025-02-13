@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Organisation;
 use App\Models\User;
 use App\Rules\ValidPostcode;
+use App\Traits\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
@@ -13,13 +14,16 @@ use Inertia\Inertia;
 
 class OrganisationController extends Controller
 {
+    use Users;
 
     public function index()
     {
         $response = Gate::inspect('viewAny', Organisation::class);
 
         if ($response->allowed()) {
-            return Inertia::render('Organisations/Index', ['organisations' => Organisation::all()]);
+            return Inertia::render('Organisations/Index', [
+                'organisations' => Organisation::paginate(10)
+            ]);
         } else {
             return back();
         }
@@ -30,7 +34,7 @@ class OrganisationController extends Controller
         $response = Gate::inspect('view', $organisation);
 
         if ($response->allowed()) {
-            $users = User::where('organisation_id', $organisation->id)->with('roles')->get();
+            $users = $this->getUsersForOrg($organisation->id);
             return Inertia::render('Organisations/Show', ['organisation' => $organisation, 'students' => $users],);
         } else {
             return back()->with('error', 'You are not authorised to view that page.');
@@ -42,7 +46,8 @@ class OrganisationController extends Controller
         $response = Gate::inspect('update', $organisation);
 
         if ($response->allowed()) {
-            return Inertia::render('Organisations/Edit', ['organisation' => $organisation, 'students' => $organisation->users()]);
+            $users = $this->getUsersForOrg($organisation->id);
+            return Inertia::render('Organisations/Edit', ['organisation' => $organisation, 'students' => $users]);
         } else {
             return back()->with('error', 'You are not authorised to edit that organisation.');
         }

@@ -6,6 +6,7 @@ import PageCard from "@/Components/PageCard.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import { now } from "lodash";
+import Paginator from "@/Components/Paginator.vue";
 
 let props = defineProps({
     organisations: Object,
@@ -71,7 +72,8 @@ function deleteOrgs() {
                                                         :checked="
                                                             indeterminate ||
                                                             selectedOrgs.length ===
-                                                                organisations.length
+                                                                organisations
+                                                                    .data.length
                                                         "
                                                         :indeterminate="
                                                             indeterminate
@@ -82,7 +84,7 @@ function deleteOrgs() {
                                                             selectedOrgs =
                                                                 $event.target
                                                                     .checked
-                                                                    ? organisations.map(
+                                                                    ? organisations.data.map(
                                                                           (o) =>
                                                                               o.id,
                                                                       )
@@ -151,7 +153,7 @@ function deleteOrgs() {
                                         <tr
                                             v-for="(
                                                 org, orgIdx
-                                            ) in organisations"
+                                            ) in organisations.data"
                                             :key="orgIdx"
                                             :class="[
                                                 selectedOrgs.includes(org.id) &&
@@ -204,7 +206,7 @@ function deleteOrgs() {
                                                 :class="[
                                                     'py-4 pr-3 text-sm font-medium whitespace-nowrap',
                                                     selectedOrgs.includes(
-                                                        org.email,
+                                                        org.id,
                                                     )
                                                         ? 'text-indigo-600'
                                                         : 'text-gray-900',
@@ -247,6 +249,11 @@ function deleteOrgs() {
                     </div>
                 </div>
             </div>
+            <Paginator
+                :key="now()"
+                :data="organisations"
+                type="Organisations"
+            />
         </PageCard>
     </PageLayout>
 </template>

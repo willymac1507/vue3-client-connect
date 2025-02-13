@@ -61,12 +61,12 @@ function viewBooking(id) {
         title="Message Details"
         @close-preview="previewOpen = false"
     >
-        <Card v-if="status !== 'sent'" title="Sender">{{
-            previewMessage.sender.name
-        }}</Card>
-        <Card v-else title="Recipient">{{
-            previewMessage.recipient.name
-        }}</Card>
+        <Card v-if="status !== 'sent'" title="Sender"
+            >{{ previewMessage.sender.name }}
+        </Card>
+        <Card v-else title="Recipient"
+            >{{ previewMessage.recipient.name }}
+        </Card>
         <Card title="Subject">{{ previewMessage.subject }}</Card>
         <Card title="Body">
             {{ previewMessage.body }}
@@ -171,6 +171,6 @@ function viewBooking(id) {
                 {{ message.subject }}
             </div>
         </div>
-        <Paginator :key="messages.total" :messages="messages" />
+        <Paginator :key="messages.total" :data="messages" type="Messages" />
     </div>
 </template>
