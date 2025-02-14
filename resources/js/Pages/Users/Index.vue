@@ -227,7 +227,8 @@ function deleteUsers() {
                                                         : 'text-gray-900',
                                                 ]"
                                             >
-                                                {{ user.name }}
+                                                {{ user.firstname }}
+                                                {{ user.surname }}
                                             </td>
                                             <td
                                                 class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"

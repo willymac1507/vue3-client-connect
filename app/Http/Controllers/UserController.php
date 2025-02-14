@@ -23,6 +23,7 @@ class UserController extends Controller
                         $query->where('name', 'like', "%{$search}%");
                     })
                     ->with(['organisation', 'roles'])
+                    ->orderBy('surname', 'asc')
                     ->paginate(10)
                     ->withQueryString(),
                 'filters' => Request::only(['search']),
@@ -41,5 +42,10 @@ class UserController extends Controller
         } else {
             return back()->with('error', 'You are not authorised to view that page.');
         }
+    }
+
+    public function create()
+    {
+        return Inertia::render('Users/Create');
     }
 }

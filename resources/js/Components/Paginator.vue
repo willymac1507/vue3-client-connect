@@ -4,7 +4,7 @@ import {
     ChevronRightIcon,
     EllipsisHorizontalIcon,
 } from "@heroicons/vue/20/solid";
-import { onUpdated, ref } from "vue";
+import { ref } from "vue";
 
 let props = defineProps({
     data: Object,
@@ -24,10 +24,6 @@ if (!rolling.value) {
     links.shift();
     links.pop();
 }
-
-onUpdated(() => {
-    console.log("Updated");
-});
 
 function rollingLinks() {
     let linkArray = [];

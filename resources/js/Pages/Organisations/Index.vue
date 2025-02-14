@@ -15,7 +15,7 @@ const selectedOrgs = ref([]);
 const indeterminate = computed(
     () =>
         selectedOrgs.value.length > 0 &&
-        selectedOrgs.value.length < props.organisations.length,
+        selectedOrgs.value.length < props.organisations.data.length,
 );
 
 function createOrg() {
@@ -249,11 +249,7 @@ function deleteOrgs() {
                     </div>
                 </div>
             </div>
-            <Paginator
-                :key="now()"
-                :data="organisations"
-                type="Organisations"
-            />
+            <Paginator :data="organisations" type="Organisations" />
         </PageCard>
     </PageLayout>
 </template>

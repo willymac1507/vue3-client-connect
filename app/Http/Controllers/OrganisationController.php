@@ -90,6 +90,12 @@ class OrganisationController extends Controller
 
     public function destroy(Request $request)
     {
+        $affectedUsers = User::whereIn('organisation_id', $request->organisations)->get();
+        foreach ($affectedUsers as $affectedUser) {
+            $affectedUser->organisation_id = null;
+            $affectedUser->save();
+            $affectedUser->roles()->detach(3);
+        }
         Organisation::destroy($request->organisations);
         return to_route('organisations')->withSuccess('The organisations have been deleted.');
     }

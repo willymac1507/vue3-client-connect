@@ -12,6 +12,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SuperController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsAdmin;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -80,7 +81,8 @@ Route::middleware('auth')->group(function () {
  */
 Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users');
-    Route::get('/user/{user:id}/show', [UserController::class, 'show'])->name('user.show');
+    Route::get('/user/{user:id}/show', [UserController::class, 'show'])->name('user.show')->can('view', 'user');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create')->can('createAny', User::class);
 })->name('users');
 
 /**

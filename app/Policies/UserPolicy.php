@@ -82,6 +82,16 @@ class UserPolicy
         return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin')) || $user->hasRole('superUser');
     }
 
+    public function createAny(User $user): bool
+    {
+        return ($user->hasRole('superUser'));
+    }
+
+    public function create(User $user): bool
+    {
+        return ($user->hasRole('admin'));
+    }
+
     /**
      * Determine whether the user can delete the model.
      */

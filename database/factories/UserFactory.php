@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 /**
@@ -25,13 +25,17 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $pictures = Storage::json('randomuser.me.json');
-        $profileThumb = $pictures["results"][rand(0, 79)]["picture"]["thumbnail"];
+//        $pictures = Storage::json('randomuser.me.json');
+//        $profileThumb = $pictures["results"][rand(0, 79)]["picture"]["thumbnail"];
+        $randomUser = Http::get('https://randomuser.me/api/?nat=gb');
+        $data = $randomUser->json('results.0');
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'firstname' => $data['name']['first'],
+            'surname' => $data['name']['last'],
+            'email' => $data['email'],
             'email_verified_at' => now(),
-            'profile_picture_path' => $profileThumb,
+            'profile_picture_path' => $data['picture']['medium'],
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

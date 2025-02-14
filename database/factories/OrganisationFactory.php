@@ -17,6 +17,7 @@ class OrganisationFactory extends Factory
      */
     public function definition(): array
     {
+        $gender = fake()->randomElement(['male', 'female']);
         return [
             'name' => fake()->company(),
             'address1' => fake()->streetAddress(),
@@ -25,7 +26,7 @@ class OrganisationFactory extends Factory
             'country' => 'United Kingdom',
             'email' => fake()->unique()->safeEmail(),
             'telephone' => fake()->unique()->phoneNumber(),
-            'contact' => fake()->name()
+            'contact' => fake()->firstName($gender) . ' ' . fake()->lastName(),
         ];
     }
 }

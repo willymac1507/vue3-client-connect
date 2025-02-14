@@ -7,7 +7,9 @@ import {
     UserCircleIcon,
 } from "@heroicons/vue/20/solid";
 import InfoAlert from "@/Components/InfoAlert.vue";
+import { Link } from "@inertiajs/vue3";
 import { ref } from "vue";
+import { format } from "date-fns";
 
 const props = defineProps({
     user: Object,
@@ -70,7 +72,7 @@ let isStudent = props.user.roles.some((role) => role.role === "student");
                             />
                         </dt>
                         <dd class="text-sm/6 font-medium text-gray-900">
-                            {{ user.name }}
+                            {{ user.firstname }} {{ user.surname }}
                         </dd>
                     </div>
                     <div
@@ -105,26 +107,67 @@ let isStudent = props.user.roles.some((role) => role.role === "student");
                         </dd>
                     </div>
                 </dl>
-                <div class="mt-6 border-t border-gray-900/5 px-6 py-6">
-                    <dl v-if="isClient">
-                        <dt class="flex-none">
-                            <span class="sr-only">Date created</span>
-                            <CalendarDaysIcon
-                                aria-hidden="true"
-                                class="h-6 w-5 text-gray-400"
-                            />
-                        </dt>
-                        <dd>Bookings as Student</dd>
-                        <dd v-for="booking in bookingsAsClient">
-                            {{ booking.id }}
-                        </dd>
-                    </dl>
-                    <dl v-if="isStudent">
-                        <dt>Bookings as a student.</dt>
-                        <dd v-for="booking in bookingsAsStudent">
-                            {{ booking.id }}
-                        </dd>
-                    </dl>
+                <div
+                    class="flex justify-between space-x-4 mt-6 border-t border-gray-900/5 px-6 py-6"
+                >
+                    <div
+                        v-if="isClient && bookingsAsClient.length > 0"
+                        class="basis 1/2"
+                    >
+                        <div class="mt-4 flex full flex-none gap-x-4">
+                            <div class="flex-none">
+                                <span class="sr-only">Client bookings</span>
+                                <CalendarDaysIcon
+                                    aria-hidden="true"
+                                    class="h-6 w-5 text-gray-400"
+                                />
+                            </div>
+                            <div class="text-sm/6 font-medium">
+                                Upcoming bookings as client
+                            </div>
+                        </div>
+                        <div class="pl-4 text-sm/6 pt-4">
+                            <div v-for="booking in bookingsAsClient">
+                                {{ booking.id }}
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="isStudent" class="basis-1/2">
+                        <div class="mt-4 flex w-full flex-none gap-x-4">
+                            <div class="flex-none">
+                                <span class="sr-only">Student bookings</span>
+                                <CalendarDaysIcon
+                                    aria-hidden="true"
+                                    class="h-6 w-5 text-gray-400"
+                                />
+                            </div>
+                            <div class="text-sm/6 font-medium">
+                                Upcoming bookings as student
+                            </div>
+                        </div>
+                        <div class="pl-4 text-sm/6 pt-4 space-y-2">
+                            <div
+                                v-for="booking in bookingsAsStudent"
+                                class="flex justify-between w-full"
+                            >
+                                <Link
+                                    :href="`/booking/${booking.id}/show`"
+                                    class="basis-1/5 text-blue-700 hover:underline"
+                                >
+                                    {{ format(booking.start, "MMM do, yyyy") }}
+                                </Link>
+                                <div class="basis-1/4">
+                                    {{ format(booking.start, "hh:mm") }}
+                                </div>
+                                <div class="basis-1/4">
+                                    {{ booking.description }}
+                                </div>
+                                <div class="basis-1/4 grow">
+                                    {{ booking.client.name }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

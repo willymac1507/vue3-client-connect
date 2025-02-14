@@ -17,14 +17,15 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, CascadesDeletes;
-
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'surname',
         'email',
         'password',
         'organisation_id'
@@ -154,5 +155,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNameAttribute(): string
+    {
+        return "{$this->firstname} {$this->surname}";
     }
 }
