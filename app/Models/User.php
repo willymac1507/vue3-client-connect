@@ -17,7 +17,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, CascadesDeletes;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +27,7 @@ class User extends Authenticatable
         'firstname',
         'surname',
         'email',
+        'mobile',
         'password',
         'organisation_id'
     ];

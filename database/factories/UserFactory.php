@@ -34,6 +34,7 @@ class UserFactory extends Factory
             'firstname' => $data['name']['first'],
             'surname' => $data['name']['last'],
             'email' => $data['email'],
+            'mobile' => $data['cell'],
             'email_verified_at' => now(),
             'profile_picture_path' => $data['picture']['medium'],
             'password' => static::$password ??= Hash::make('password'),

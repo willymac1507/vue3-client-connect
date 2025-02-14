@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+    --font-sans: InterVariable, sans-serif;
+}
+
 .v-enter-active,
 .v-leave-active {
     transition: opacity 0.5s ease;
@@ -8,4 +12,42 @@
 .v-enter-from,
 .v-leave-to {
     opacity: 0;
+}
+
+@font-face {
+    font-family: 'IcoMoon';
+    src: url('https://i.icomoon.io/public/83773635e2/ClientConnect/IcoMoon.eot?cvwm3j');
+    src: url('https://i.icomoon.io/public/83773635e2/ClientConnect/IcoMoon.eot?cvwm3j#iefix') format('embedded-opentype'),
+    url('https://i.icomoon.io/public/83773635e2/ClientConnect/IcoMoon.woff2?cvwm3j') format('woff2'),
+    url('https://i.icomoon.io/public/83773635e2/ClientConnect/IcoMoon.ttf?cvwm3j') format('truetype'),
+    url('https://i.icomoon.io/public/83773635e2/ClientConnect/IcoMoon.woff?cvwm3j') format('woff'),
+    url('https://i.icomoon.io/public/83773635e2/ClientConnect/IcoMoon.svg?cvwm3j#IcoMoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+.icon {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'IcoMoon' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-facebook:before {
+    content: "\e900";
+    color: #1877f2;
+}
+
+.icon-google:before {
+    content: "\e901";
+    color: #4285f4;
 }

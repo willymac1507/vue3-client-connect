@@ -58,13 +58,13 @@ let last = links.length - 1;
             <Component
                 :is="links[0].url ? 'Ilink' : 'span'"
                 :href="links[0].url"
-                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50"
                 >Previous
             </Component>
             <Component
                 :is="links[last].url ? 'Ilink' : 'span'"
                 :href="links[last].url"
-                class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50"
                 >Next
             </Component>
         </div>
@@ -86,7 +86,7 @@ let last = links.length - 1;
             <div>
                 <nav
                     aria-label="Pagination"
-                    class="isolate inline-flex -space-x-px rounded-md shadow-xs"
+                    class="isolate inline-flex -space-x-px rounded-md shadow-xs text-xs"
                 >
                     <Component
                         :is="data.prev_page_url ? 'Ilink' : 'span'"

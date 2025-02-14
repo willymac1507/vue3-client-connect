@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Organisation;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Http;
 
 /**
  * @extends Factory<Organisation>
@@ -17,16 +18,22 @@ class OrganisationFactory extends Factory
      */
     public function definition(): array
     {
-        $gender = fake()->randomElement(['male', 'female']);
+        $randomUser = Http::get('https://randomuser.me/api/?nat=gb');
+        $randomPostcode = Http::get('https://api.postcodes.io/random/postcodes');
+        $data = $randomUser->json('results.0');
+        $post = $randomPostcode->json('result');
+
         return [
             'name' => fake()->company(),
-            'address1' => fake()->streetAddress(),
-            'town' => fake()->city(),
-            'postcode' => fake()->postcode(),
-            'country' => 'United Kingdom',
-            'email' => fake()->unique()->safeEmail(),
-            'telephone' => fake()->unique()->phoneNumber(),
-            'contact' => fake()->firstName($gender) . ' ' . fake()->lastName(),
+            'address1' => $data['location']['street']['number'] . ' ' . $data['location']['street']['name'],
+            'town' => $data['location']['city'],
+            'postcode' => $post['postcode'],
+            'country' => $data['location']['country'],
+            'email' => $data['email'],
+            'telephone' => $data['phone'],
+            'contact' => $data['name']['first'] . ' ' . $data['name']['last'],
+            'lat' => $post['latitude'],
+            'lng' => $post['longitude'],
         ];
     }
 }
