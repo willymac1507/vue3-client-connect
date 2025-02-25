@@ -69,7 +69,8 @@ class OrganisationController extends Controller
     {
         return $data->validate([
             'name' => 'required',
-            'contact' => 'required',
+            'contactFirstName' => 'required',
+            'contactLastName' => 'required',
             'email' => 'required',
             'telephone' => 'required',
             'address1' => 'required',
@@ -110,13 +111,20 @@ class OrganisationController extends Controller
             $attributes['lat'] = $latLong[0];
             $attributes['lng'] = $latLong[1];
             $org = Organisation::create($attributes);
-            $user = [
-                'name' => $attributes['contact'],
+            if (User::firstWhere([
+                'firstname' => $attributes['contactFirstName'],
+                'surname' => $attributes['contactLastName'],
+                'email' => $attributes['email'],
+            ])) {
+                return to_route('organisations')->with('error', 'That user already exists. Please carry out a user transfer before adding this user as admin.');
+            }
+            $admin = User::create([
+                'firstname' => $attributes['contactFirstName'],
+                'surname' => $attributes['contactLastName'],
                 'email' => $attributes['email'],
                 'password' => fake()->password,
                 'organisation_id' => $org->id,
-            ];
-            $admin = User::create($user);
+            ]);
             $admin->roles()->attach([2, 4]);
             return Redirect::route('organisations')->with('success', 'A new organisation has been created.');
         }

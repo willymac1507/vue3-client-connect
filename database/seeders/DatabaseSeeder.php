@@ -42,7 +42,8 @@ class DatabaseSeeder extends Seeder
             'country' => 'United Kingdom',
             'email' => 'info@camelcase.uk',
             'telephone' => '07808 550651',
-            'contact' => 'Will McCloy',
+            'contactFirstName' => 'Will',
+            'contactLastName' => 'McCloy'
         ]);
 
         User::factory(30)->has(Booking::factory(5)->has(Message::factory(5)))->create([

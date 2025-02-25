@@ -31,7 +31,8 @@ class OrganisationFactory extends Factory
             'country' => $data['location']['country'],
             'email' => $data['email'],
             'telephone' => $data['phone'],
-            'contact' => $data['name']['first'] . ' ' . $data['name']['last'],
+            'contactFirstName' => $data['name']['first'],
+            'contactLastName' => $data['name']['last'],
             'lat' => $post['latitude'],
             'lng' => $post['longitude'],
         ];

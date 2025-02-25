@@ -42,7 +42,7 @@ function clicked(org) {
 <template>
     <PageLayout title="Search">
         <PageCard
-            description="Enter your postcode to find out some stuff."
+            description="Enter your postcode to find your nearest participating salon / school."
             title="Postcode Search"
         >
             <div class="flex flex-col items-start gap-y-4">

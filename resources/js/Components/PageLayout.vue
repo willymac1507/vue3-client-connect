@@ -10,7 +10,7 @@ defineProps({
 let showFlash = ref(usePage().props.flash);
 setTimeout(() => {
     showFlash.value = false;
-}, 2000);
+}, 4000);
 </script>
 <template>
     <Head :title="title" />

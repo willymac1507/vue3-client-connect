@@ -22,7 +22,8 @@ return new class extends Migration {
             $table->float('lng')->nullable();
             $table->string('email');
             $table->string('telephone');
-            $table->string('contact');
+            $table->string('contactFirstName');
+            $table->string('contactLastName');
             $table->timestamps();
             $table->softDeletes();
         });

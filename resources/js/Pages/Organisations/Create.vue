@@ -19,7 +19,8 @@ let form = useForm({
     country: "United Kingdom",
     email: null,
     telephone: null,
-    contact: null,
+    contactFirstName: null,
+    contactLastName: null,
     lat: null,
     lng: null,
 });
@@ -63,19 +64,37 @@ let form = useForm({
                                         for="name"
                                         >Contact</label
                                     >
-                                    <div class="mt-2">
-                                        <input
-                                            id="contact"
-                                            v-model="form.contact"
-                                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                            name="contact"
-                                            placeholder="Name"
-                                            required
-                                            type="text"
-                                        />
-                                        <ValidationError
-                                            :error="errors.contact"
-                                        />
+                                    <div
+                                        class="mt-2 flex justify-between space-x-2"
+                                    >
+                                        <div class="w-1/2">
+                                            <input
+                                                id="contactFirstName"
+                                                v-model="form.contactFirstName"
+                                                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                                name="contactFirstName"
+                                                placeholder="First Name"
+                                                required
+                                                type="text"
+                                            />
+                                            <ValidationError
+                                                :error="errors.contactFirstName"
+                                            />
+                                        </div>
+                                        <div class="w-1/2">
+                                            <input
+                                                id="contactLastName"
+                                                v-model="form.contactLastName"
+                                                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                                name="contactLastName"
+                                                placeholder="Last Name"
+                                                required
+                                                type="text"
+                                            />
+                                            <ValidationError
+                                                :error="errors.contactLastName"
+                                            />
+                                        </div>
                                     </div>
                                     <div class="mt-2">
                                         <input
@@ -188,11 +207,11 @@ let form = useForm({
                 </div>
                 <div class="mt-2 flex items-center justify-end gap-x-6">
                     <SecondaryButton @click="form.reset()"
-                        >Cancel</SecondaryButton
-                    >
+                        >Cancel
+                    </SecondaryButton>
                     <PrimaryButton :disabled="form.processing" type="submit"
-                        >save</PrimaryButton
-                    >
+                        >save
+                    </PrimaryButton>
                 </div>
             </form>
         </PageCard>
