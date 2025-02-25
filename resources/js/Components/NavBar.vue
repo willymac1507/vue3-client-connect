@@ -9,6 +9,7 @@ import { ref } from "vue";
 
 const showingNavigationDropdown = ref(false);
 const page = usePage();
+console.log(page);
 </script>
 <template>
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -31,7 +32,7 @@ const page = usePage();
                         Dashboard
                     </NavLink>
                     <div
-                        v-if="usePage().props.can['superAdmin']"
+                        v-if="page.props.can['superAdmin']"
                         class="inline-flex items-center pt-0.5 border-b-2 border-transparent hover:border-gray-300"
                     >
                         <Dropdown align="right" width="48">
@@ -66,14 +67,14 @@ const page = usePage();
                                     Organisations
                                 </DropdownLink>
                                 <DropdownLink :href="route('users')">
-                                    Users</DropdownLink
-                                >
+                                    Users
+                                </DropdownLink>
                                 <DropdownLink href="#"> Bookings</DropdownLink>
                             </template>
                         </Dropdown>
                     </div>
                     <NavLink
-                        v-if="usePage().props.can['admin']"
+                        v-if="page.props.can['admin']"
                         :active="route().current('admin')"
                         :href="route('admin')"
                         >Admin
@@ -85,7 +86,7 @@ const page = usePage();
                         Messages
                     </NavLink>
                     <NavLink
-                        v-if="usePage().props.can['search']"
+                        v-if="page.props.can['search']"
                         :active="route().current('search.search')"
                         :href="route('search.search')"
                     >
@@ -131,13 +132,13 @@ const page = usePage();
                                 Profile
                             </DropdownLink>
                             <DropdownLink
-                                v-if="usePage().props.can['student']"
+                                v-if="page.props.can['student']"
                                 :href="route('calendar.edit')"
                             >
                                 Availability
                             </DropdownLink>
                             <DropdownLink
-                                v-if="usePage().props.can['student']"
+                                v-if="page.props.can['student']"
                                 :href="route('services.edit')"
                             >
                                 Services

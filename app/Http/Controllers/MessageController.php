@@ -26,7 +26,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Messages/Messages', [
+        return Inertia::render('Messages/Index', [
             'messages' => $this->getAllMessages(),
             'status' => 'all'
         ]);
@@ -37,7 +37,7 @@ class MessageController extends Controller
      */
     public function unread()
     {
-        return Inertia::render('Messages/Messages', [
+        return Inertia::render('Messages/Index', [
             'messages' => $this->getUnreadMessages(),
             'status' => 'unread'
         ]);
@@ -45,7 +45,7 @@ class MessageController extends Controller
 
     public function flagged()
     {
-        return Inertia::render('Messages/Messages', [
+        return Inertia::render('Messages/Index', [
             'messages' => $this->getFlaggedMessages(),
             'status' => 'flagged'
         ]);
@@ -56,7 +56,7 @@ class MessageController extends Controller
      */
     public function sent()
     {
-        return Inertia::render('Messages/Messages', [
+        return Inertia::render('Messages/Index', [
             'messages' => $this->getSentMessages(),
             'status' => 'sent'
         ]);
@@ -72,7 +72,7 @@ class MessageController extends Controller
         $response = Gate::inspect('view', $message);
 
         if ($response->allowed()) {
-            return Inertia::render('Messages/ShowMessage', ['message' => $message]);
+            return Inertia::render('Messages/Show', ['message' => $message]);
         } else {
             return back();
         }

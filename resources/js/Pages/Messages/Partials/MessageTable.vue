@@ -1,5 +1,5 @@
 <script setup>
-import NavTabs from "@/Pages/Messages/NavTabs.vue";
+import NavTabs from "@/Pages/Messages/Partials/NavTabs.vue";
 import { format, isToday } from "date-fns";
 import { computed, ref } from "vue";
 import Paginator from "@/Components/Paginator.vue";
@@ -62,10 +62,10 @@ function viewBooking(id) {
         @close-preview="previewOpen = false"
     >
         <Card v-if="status !== 'sent'" title="Sender"
-            >{{ previewMessage.sender.name }}
+            >{{ previewMessage.sender.full_name }}
         </Card>
         <Card v-else title="Recipient"
-            >{{ previewMessage.recipient.name }}
+            >{{ previewMessage.recipient.full_name }}
         </Card>
         <Card title="Subject">{{ previewMessage.subject }}</Card>
         <Card title="Body">
@@ -130,7 +130,7 @@ function viewBooking(id) {
         </Card>
     </SideDrawer>
     <div
-        class="overflow-hidden bg-white shadow-sm sm:rounded-lg gap-y-4 p-6 divide-y-2"
+        class="overflow-hidden bg-white shadow-sm sm:rounded-lg gap-y-4 p-6 divide-y-1 divide-gray-300"
     >
         <NavTabs :tabs="tabs" />
         <div
@@ -153,8 +153,8 @@ function viewBooking(id) {
                         class="pt-1 text-sm leading-5"
                         v-text="
                             status === 'sent'
-                                ? message.recipient.name
-                                : message.sender.name
+                                ? message.recipient.full_name
+                                : message.sender.full_name
                         "
                     />
                 </div>
@@ -167,7 +167,7 @@ function viewBooking(id) {
                     "
                 />
             </div>
-            <div class="mr-auto truncate w-3/4">
+            <div class="mr-auto truncate w-3/4 text-sm text-gray-400">
                 {{ message.subject }}
             </div>
         </div>

@@ -1,7 +1,7 @@
 <script setup>
 import { inject, reactive } from "vue";
 import { router } from "@inertiajs/vue3";
-import ValidationError from "@/Pages/Messages/ValidationError.vue";
+import ValidationError from "@/Pages/Messages/Partials/ValidationError.vue";
 
 let props = defineProps({
     sender: Number,
