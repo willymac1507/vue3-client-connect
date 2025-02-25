@@ -22,7 +22,7 @@ class BookingController extends Controller
     {
         $response = Gate::inspect('view', $booking);
         if ($response->allowed()) {
-            return Inertia::render('Bookings/ShowBooking', [
+            return Inertia::render('Bookings/Show', [
                 'booking' => $this->getThisBooking($booking)
             ]);
         } else {

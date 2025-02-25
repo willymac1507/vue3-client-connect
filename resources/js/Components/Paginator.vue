@@ -11,19 +11,21 @@ let props = defineProps({
     type: String,
 });
 
-let links = [];
+let links = props.data.links;
+links.shift();
+links.pop();
 const from = props.data.from;
 const to = props.data.to;
 const total = props.data.total;
 let rolling = ref(false);
 const maxPages = 7;
 const totalPages = props.data.links.length - 2;
-rolling.value = totalPages > maxPages;
-links = rolling.value ? rollingLinks() : props.data.links;
-if (!rolling.value) {
-    links.shift();
-    links.pop();
-}
+// rolling.value = totalPages > maxPages;
+// links = rolling.value ? rollingLinks() : props.data.links;
+// if (!rolling.value) {
+//     links.shift();
+//     links.pop();
+// }
 
 function rollingLinks() {
     let linkArray = [];

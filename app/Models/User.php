@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -31,6 +32,8 @@ class User extends Authenticatable
         'password',
         'organisation_id'
     ];
+
+    protected $appends = ['full_name'];
 
     protected $cascadeDeletes = [];
 
@@ -161,8 +164,10 @@ class User extends Authenticatable
     /**
      * @return string
      */
-    protected function getNameAttribute(): string
+    protected function fullName(): Attribute
     {
-        return "{$this->firstname} {$this->surname}";
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => $attributes['firstname'] . ' ' . $attributes['surname']
+        );
     }
 }

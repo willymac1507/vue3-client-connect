@@ -1,6 +1,6 @@
 <script setup>
 import { useForm } from "@inertiajs/vue3";
-import ValidationError from "@/Pages/Messages/ValidationError.vue";
+import ValidationError from "@/Pages/Messages/Partials/ValidationError.vue";
 import PageLayout from "@/Components/PageLayout.vue";
 import PageCard from "@/Components/PageCard.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
