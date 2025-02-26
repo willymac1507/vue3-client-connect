@@ -6,6 +6,7 @@ import { Link, router } from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const props = defineProps({
+    breadcrumbs: Object,
     organisation: Object,
     students: Object,
     roles: Object,
@@ -19,7 +20,7 @@ function editOrg() {
 }
 </script>
 <template>
-    <PageLayout title="Organisation">
+    <PageLayout :breadcrumbs="breadcrumbs" title="Organisation">
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <PageCard
                 description="Address, contact and student details."
@@ -121,7 +122,13 @@ function editOrg() {
                         >
                             <dt class="text-sm/6 font-medium text-gray-900">
                                 Students
-                                <PrimaryButton class="ml-6"
+                                <PrimaryButton
+                                    class="ml-6"
+                                    @click="
+                                        router.visit(
+                                            `/user/create/${props.organisation.id}`,
+                                        )
+                                    "
                                     >Add Student
                                 </PrimaryButton>
                             </dt>
@@ -142,7 +149,9 @@ function editOrg() {
                                             <div
                                                 class="ml-4 flex min-w-0 flex-1 gap-2"
                                             >
-                                                <span>{{ student.name }}</span>
+                                                <span>{{
+                                                    student.full_name
+                                                }}</span>
                                             </div>
                                         </div>
                                         <div class="flex gap-x-2">

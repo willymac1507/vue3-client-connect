@@ -6,6 +6,9 @@ use App\Models\Organisation;
 use App\Models\User;
 use App\Rules\ValidPostcode;
 use App\Traits\Users;
+use Diglactic\Breadcrumbs\Breadcrumbs;
+use Diglactic\Breadcrumbs\Exceptions\InvalidBreadcrumbException;
+use Diglactic\Breadcrumbs\Exceptions\UnnamedRouteException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
@@ -22,20 +25,25 @@ class OrganisationController extends Controller
 
         if ($response->allowed()) {
             return Inertia::render('Organisations/Index', [
-                'organisations' => Organisation::paginate(10)
+                'organisations' => Organisation::orderBy('name', 'asc')
+                    ->paginate(10)
             ]);
         } else {
             return back();
         }
     }
 
+    /**
+     * @throws InvalidBreadcrumbException
+     * @throws UnnamedRouteException
+     */
     public function show(Request $request, Organisation $organisation)
     {
         $response = Gate::inspect('view', $organisation);
 
         if ($response->allowed()) {
             $users = $this->getUsersForOrg($organisation->id);
-            return Inertia::render('Organisations/Show', ['organisation' => $organisation, 'students' => $users],);
+            return Inertia::render('Organisations/Show', ['organisation' => $organisation, 'students' => $users, 'breadcrumbs' => Breadcrumbs::generate('organisation.show', $organisation)]);
         } else {
             return back()->with('error', 'You are not authorised to view that page.');
         }

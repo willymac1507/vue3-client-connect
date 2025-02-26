@@ -12,6 +12,7 @@ import { ref } from "vue";
 import { format } from "date-fns";
 
 const props = defineProps({
+    breadcrumbs: Object,
     user: Object,
     organisation: Object,
     bookingsAsClient: Object,
@@ -22,7 +23,7 @@ let isClient = props.user.roles.some((role) => role.role === "client");
 let isStudent = props.user.roles.some((role) => role.role === "student");
 </script>
 <template>
-    <PageLayout title="User Admin">
+    <PageLayout :breadcrumbs="breadcrumbs" title="User Admin">
         <InfoAlert v-show="roleInfo" class="absolute left-0 top-0 w-full">
             This role allows the user to search for, and book, appointments.
         </InfoAlert>
