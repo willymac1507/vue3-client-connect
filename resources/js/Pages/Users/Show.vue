@@ -35,7 +35,8 @@ let isStudent = props.user.roles.some((role) => role.role === "student");
                             <img
                                 :src="user.profile_picture_path"
                                 alt="profile pic"
-                                height="100px"
+                                height="200"
+                                width="200"
                             />
                         </dd>
                     </div>
@@ -71,12 +72,13 @@ let isStudent = props.user.roles.some((role) => role.role === "student");
                                 class="h-6 w-5 text-gray-400"
                             />
                         </dt>
-                        <dd class="text-sm/6 font-medium text-gray-900">
-                            {{ user.firstname }} {{ user.surname }}
+                        <dd class="text-sm/6 font-medium text-gray-90">
+                            {{ user.full_name }}
                         </dd>
                     </div>
-                    <div
+                    <Link
                         v-if="user.organisation"
+                        :href="`/organisation/${user.organisation.id}/show`"
                         class="mt-4 flex w-full flex-none gap-x-4 px-6"
                     >
                         <dt class="flex-none">
@@ -86,10 +88,10 @@ let isStudent = props.user.roles.some((role) => role.role === "student");
                                 class="h-6 w-5 text-gray-400"
                             />
                         </dt>
-                        <dd class="text-sm/6 text-gray-500">
+                        <dd class="text-sm/6 text-blue-600 hover:underline">
                             {{ user.organisation.name }}
                         </dd>
-                    </div>
+                    </Link>
                     <div class="mt-4 flex w-full flex-none gap-x-4 px-6">
                         <dt class="flex-none">
                             <span class="sr-only">Status</span>

@@ -19,15 +19,18 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
-    server: {
-        proxy: {
-            "/api": {
-                target: "http://localhost:8888/",
-                changeOrigin: true,
-                secure: false,
-                rewrite: (path) => path.replace(/^\/api/, ""),
-            },
-            cors: false,
-        },
+    // server: {
+    //     proxy: {
+    //         "/api": {
+    //             target: "http://localhost:8888/",
+    //             changeOrigin: true,
+    //             secure: false,
+    //             rewrite: (path) => path.replace(/^\/api/, ""),
+    //         },
+    //         cors: false,
+    //     },
+    // },
+    ssr: {
+        noExternal: ["@inertiajs/server"],
     },
 });

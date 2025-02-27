@@ -30,7 +30,8 @@ class User extends Authenticatable
         'email',
         'mobile',
         'password',
-        'organisation_id'
+        'organisation_id',
+        'profile_picture_path'
     ];
 
     protected $appends = ['full_name'];

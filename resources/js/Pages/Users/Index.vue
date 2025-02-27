@@ -19,7 +19,7 @@ const indeterminate = computed(
 );
 
 function createUser() {
-    router.visit("/users/create");
+    router.visit("/user/create");
 }
 
 function deleteUsers() {
@@ -215,6 +215,8 @@ function deleteUsers() {
                                                     "
                                                     alt="profile pic"
                                                     class="rounded-full"
+                                                    height="72"
+                                                    width="72"
                                                 />
                                             </td>
                                             <td
