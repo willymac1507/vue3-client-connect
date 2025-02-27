@@ -118,7 +118,7 @@ class MessageController extends Controller
     {
         return Inertia::render('Messages/Create', ['contacts' => $this->getLinkedContacts(Auth::user())->map(fn($user) => [
             'id' => $user->id,
-            'name' => $user->name,
+            'name' => $user->full_name,
             'organisation' => $user->organisation_id ??= 0
         ]),
             'sender_id' => Auth::id()]);

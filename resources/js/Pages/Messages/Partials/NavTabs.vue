@@ -1,4 +1,6 @@
 <script setup>
+import { Link } from "@inertiajs/vue3";
+
 defineProps({
     tabs: Array,
 });
@@ -25,7 +27,7 @@ defineProps({
                 aria-label="Tabs"
                 class="isolate flex divide-x divide-gray-200 rounded-lg shadow-sm"
             >
-                <a
+                <Link
                     v-for="(tab, tabIdx) in tabs"
                     :key="tab.name"
                     :aria-current="tab.current ? 'page' : undefined"
@@ -47,7 +49,7 @@ defineProps({
                         ]"
                         aria-hidden="true"
                     />
-                </a>
+                </Link>
             </nav>
         </div>
     </div>

@@ -6,6 +6,14 @@ use App\Models\User;
 
 class UserPolicy
 {
+    public function before(User $user, $ability): bool|null
+    {
+        if ($user->hasRole('superUser')) {
+            return true;
+        }
+        return null;
+    }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -89,7 +97,7 @@ class UserPolicy
 
     public function create(User $user): bool
     {
-        return ($user->hasRole('admin'));
+        return ($user->organisation_id === $organisation->id && $user->hasRole('admin')) || $user->hasRole('superUser');
     }
 
     /**
