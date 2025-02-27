@@ -3,14 +3,22 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
+import Breadcrumb from "@/Components/Breadcrumb.vue";
 
 defineProps({
     title: String,
+    breadcrumbs: { type: Object, default: null },
 });
+
 let showFlash = ref(usePage().props.flash);
 setTimeout(() => {
     showFlash.value = false;
 }, 4000);
+
+const breadcrumbItems = [
+    { label: "Dashboard", url: "/" },
+    { label: "Users", url: "/users" },
+];
 </script>
 <template>
     <Head :title="title" />
@@ -22,8 +30,10 @@ setTimeout(() => {
                 </h2>
                 <slot name="otherContent" />
             </div>
+            <div v-if="breadcrumbs" class="mt-2">
+                <Breadcrumb :items="breadcrumbs"></Breadcrumb>
+            </div>
         </template>
-        <Transition></Transition>
         <div class="py-12 relative">
             <Transition>
                 <div

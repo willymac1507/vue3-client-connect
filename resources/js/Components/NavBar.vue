@@ -9,7 +9,6 @@ import { ref } from "vue";
 
 const showingNavigationDropdown = ref(false);
 const page = usePage();
-console.log(page);
 </script>
 <template>
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
