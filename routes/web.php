@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/{user:id}/show', [UserController::class, 'show'])->name('user.show')->can('view', 'user');
     Route::get('/user/create', [UserController::class, 'create'])->name('users.create')->can('createAny', User::class);
     Route::get('/user/create/{organisation:id}', [UserController::class, 'create'])->name('users.createInOrganisation')->can('create', User::class);
+    Route::post('/users', [UserController::class, 'store'])->name('users.store')->can('createAny', User::class);
 })->name('users');
 
 /**

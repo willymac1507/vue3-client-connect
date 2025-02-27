@@ -3,7 +3,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
-import Breadcrumb from "@/Components/Breadcrumb.vue";
 
 defineProps({
     title: String,
@@ -29,9 +28,6 @@ const breadcrumbItems = [
                     {{ title }}
                 </h2>
                 <slot name="otherContent" />
-            </div>
-            <div v-if="breadcrumbs" class="mt-2">
-                <Breadcrumb :items="breadcrumbs"></Breadcrumb>
             </div>
         </template>
         <div class="py-12 relative">

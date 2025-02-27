@@ -6,7 +6,6 @@ use App\Models\Organisation;
 use App\Models\User;
 use App\Rules\ValidPostcode;
 use App\Traits\Users;
-use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Exceptions\InvalidBreadcrumbException;
 use Diglactic\Breadcrumbs\Exceptions\UnnamedRouteException;
 use Illuminate\Http\Request;
@@ -43,7 +42,7 @@ class OrganisationController extends Controller
 
         if ($response->allowed()) {
             $users = $this->getUsersForOrg($organisation->id);
-            return Inertia::render('Organisations/Show', ['organisation' => $organisation, 'students' => $users, 'breadcrumbs' => Breadcrumbs::generate('organisation.show', $organisation)]);
+            return Inertia::render('Organisations/Show', ['organisation' => $organisation, 'students' => $users]);
         } else {
             return back()->with('error', 'You are not authorised to view that page.');
         }
