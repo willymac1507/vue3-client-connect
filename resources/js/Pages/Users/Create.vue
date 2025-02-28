@@ -1,7 +1,6 @@
 <script setup>
 import PageLayout from "@/Components/PageLayout.vue";
 import PageCard from "@/Components/PageCard.vue";
-import { PhotoIcon } from "@heroicons/vue/24/solid";
 
 import { ref } from "vue";
 import { useForm, usePage } from "@inertiajs/vue3";
@@ -12,6 +11,7 @@ const props = defineProps({
     organisation_id: Number,
 });
 const page = usePage();
+let path = ref("");
 let filePresent = ref(false);
 let text = ref("");
 let form = useForm({
@@ -22,6 +22,13 @@ let form = useForm({
     organisation_id: props.organisation_id,
     profilePicture: null,
 });
+
+async function newFile(e) {
+    filePresent = true;
+    let file = e.target.files[0];
+    form.profilePicture = file;
+    path.value = URL.createObjectURL(file);
+}
 
 function submitForm() {
     form.post("/users", { forceFormData: true });
@@ -181,52 +188,30 @@ function submitForm() {
                                     for="cover-photo"
                                     >Cover photo</label
                                 >
-                                <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                    <div
-                                        class="flex max-w-xl justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
-                                    >
-                                        <div class="text-center">
-                                            <PhotoIcon
-                                                aria-hidden="true"
-                                                class="mx-auto size-12 text-gray-300"
-                                            />
-                                            <div
-                                                class="mt-4 flex justify-center text-sm/6 text-gray-600"
+                                <div class="flex flex-col items-center">
+                                    <label for="file-upload">
+                                        <div
+                                            class="inline-flex items-center rounded-md border border-transparent bg-cyan-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-cyan-700 focus:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-cyan-900"
+                                        >
+                                            <span v-if="!filePresent"
+                                                >Upload File</span
                                             >
-                                                <label
-                                                    class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:outline-hidden hover:text-indigo-500"
-                                                    for="profile-picture"
-                                                >
-                                                    <span v-if="!filePresent"
-                                                        >Upload a file</span
-                                                    >
-                                                    <span v-if="filePresent">{{
-                                                        form.profilePicture[
-                                                            "name"
-                                                        ]
-                                                    }}</span>
-                                                    <input
-                                                        id="profile-picture"
-                                                        accept="image/png, image/jpeg, image/gif"
-                                                        class="sr-only"
-                                                        name="profile-picture"
-                                                        type="file"
-                                                        @change=""
-                                                        @input="
-                                                            filePresent = true;
-                                                            form.profilePicture =
-                                                                $event.target.files[0];
-                                                        "
-                                                    />
-                                                </label>
-                                            </div>
-                                            <p class="text-xs/5 text-gray-600">
-                                                PNG, JPG, GIF up to 10MB
-                                            </p>
+                                            <span v-else>Change File</span>
                                         </div>
-                                    </div>
-                                    <ValidationError
-                                        :error="form.errors.profilePicture"
+                                        <input
+                                            id="file-upload"
+                                            accept="image/*"
+                                            class="sr-only"
+                                            name="file-upload"
+                                            type="file"
+                                            @change="newFile"
+                                        />
+                                    </label>
+                                    <img
+                                        :src="path"
+                                        alt=""
+                                        class="mt-2 rounded-full"
+                                        width="100"
                                     />
                                 </div>
                             </div>
