@@ -4,12 +4,14 @@ import PageCard from "@/Components/PageCard.vue";
 import { PhotoIcon } from "@heroicons/vue/24/solid";
 
 import { ref } from "vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, usePage } from "@inertiajs/vue3";
 import ValidationError from "@/Pages/Messages/Partials/ValidationError.vue";
 
 const props = defineProps({
     organisations: Object,
+    organisation_id: Number,
 });
+const page = usePage();
 let filePresent = ref(false);
 let text = ref("");
 let form = useForm({
@@ -17,7 +19,7 @@ let form = useForm({
     surname: null,
     email: null,
     mobile: null,
-    organisation_id: props.organisation_id ?? null,
+    organisation_id: props.organisation_id,
     profilePicture: null,
 });
 
@@ -150,7 +152,8 @@ function submitForm() {
                                     <select
                                         id="organisation"
                                         v-model="form.organisation_id"
-                                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        :disabled="organisation_id"
+                                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 disabled:opacity-25"
                                         name="organisation"
                                         required
                                     >

@@ -125,9 +125,9 @@ function editOrg() {
                                 <PrimaryButton
                                     class="ml-6"
                                     @click="
-                                        router.visit(
-                                            `/user/create/${props.organisation.id}`,
-                                        )
+                                        router.get('/user/create', {
+                                            organisation: props.organisation.id,
+                                        })
                                     "
                                     >Add Student
                                 </PrimaryButton>

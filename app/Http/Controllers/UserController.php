@@ -61,21 +61,30 @@ class UserController extends Controller
             'email' => 'required',
             'mobile' => 'required',
             'organisation_id' => 'required',
-            'profilePicture' => 'nullable|image|max:2048',
+            'profilePicture' => 'nullable|image:allow_svg|max:2048',
         ]);
         $path = $request->file('profilePicture')->store('profilePictures', 'public');
         unset($attributes['profilePicture']);
         $attributes['profile_picture_path'] = '/' . $path;
         $attributes['password'] = Hash::make(fake()->password);
         $user = User::create($attributes);
-        return to_route('users')->with('success', 'A new user has been created.');
+        return to_route('organisation.show')->with('success', 'A new user has been created.');
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return Inertia::render('Users/Create', ['organisations' => $this->getAllOrganisations()->map(fn($org) => [
-            'id' => $org->id,
-            'name' => $org->name,
-        ])]);
+        $user = auth()->user();
+        if ($user->hasRole('superUser')) {
+            $organisation_id = RequestFacade::input('organisation') ?? null;
+            $organisations = $this->getAllOrganisations()->map(fn($org) => [
+                'id' => $org->id,
+                'name' => $org->name,
+            ]);
+        } else {
+            $organisation_id = $user->organisation_id;
+            $organisations = [$this->getAdminOrganisation($user->organisation_id)];
+        }
+        return Inertia::render('Users/Create', ['organisations' => $organisations, 'organisation_id' => $organisation_id]);
     }
+
 }

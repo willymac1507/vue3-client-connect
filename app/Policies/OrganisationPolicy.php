@@ -7,13 +7,18 @@ use App\Models\User;
 
 class OrganisationPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user): User|bool
     {
         return $user->hasRole('superUser');
     }
+
+    /**
+     * Determine whether the user can view any models.
+     */
+//    public function viewAny(User $user): bool
+//    {
+//        return $user->hasRole('superUser');
+//    }
 
     /**
      * Determine whether the user can view the model.
@@ -28,7 +33,7 @@ class OrganisationPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('superUser');
+        return $user->hasRole('admin');
     }
 
     /**

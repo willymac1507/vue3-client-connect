@@ -12,4 +12,9 @@ trait Organisations
     {
         return Organisation::orderBy('name')->get();
     }
+
+    public function getAdminOrganisation($id)
+    {
+        return Organisation::findOrFail($id);
+    }
 }

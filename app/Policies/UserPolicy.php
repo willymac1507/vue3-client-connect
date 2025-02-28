@@ -97,7 +97,7 @@ class UserPolicy
 
     public function create(User $user): bool
     {
-        return ($user->organisation_id === $organisation->id && $user->hasRole('admin')) || $user->hasRole('superUser');
+        return ($user->hasRole('admin'));
     }
 
     /**
