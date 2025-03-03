@@ -55,20 +55,34 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $orgs = [];
+        if ($request->user()->can('createAny', User::class)) {
+            foreach ($this->getAllOrganisations() as $org) {
+                $orgs[] = $org['id'];
+            }
+        } else {
+            $orgs = [$request->user()->organisation_id];
+        }
         $attributes = $request->validate([
             'firstname' => 'required',
             'surname' => 'required',
             'email' => 'required',
             'mobile' => 'required',
-            'organisation_id' => 'required',
+            'roles' => 'required|array|min:1|max:4',
+            'organisation_id' => ['required', 'in:' . implode(',', $orgs)],
             'profilePicture' => 'nullable|image:allow_svg|max:2048',
         ]);
-        $path = $request->file('profilePicture')->store('profilePictures', 'public');
-        unset($attributes['profilePicture']);
-        $attributes['profile_picture_path'] = '/' . $path;
+        $roles = array_column($attributes['roles'], 'id');
+        unset($attributes['roles']);
+        if ($request->hasFile('profilePicture')) {
+            $path = $request->file('profilePicture')->store('profilePictures', 'public');
+            unset($attributes['profilePicture']);
+            $attributes['profile_picture_path'] = '/' . $path;
+        }
         $attributes['password'] = Hash::make(fake()->password);
         $user = User::create($attributes);
-        return to_route('organisation.show')->with('success', 'A new user has been created.');
+        $user->roles()->sync($roles);
+        return to_route('organisation.show', $attributes['organisation_id'])->with('success', 'A new user has been created.');
     }
 
     public function create(Request $request)
@@ -85,6 +99,14 @@ class UserController extends Controller
             $organisations = [$this->getAdminOrganisation($user->organisation_id)];
         }
         return Inertia::render('Users/Create', ['organisations' => $organisations, 'organisation_id' => $organisation_id]);
+    }
+
+    public function edit(User $user)
+    {
+        return Inertia::render('Users/Edit', ['user' => $user, 'roles' => $user->roles->map(fn($role) => [
+            'id' => $role->id,
+            'label' => $role->role
+        ])]);
     }
 
 }

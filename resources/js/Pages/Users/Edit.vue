@@ -20,27 +20,23 @@ const options = [
 const selected = ref([]);
 
 const props = defineProps({
+    user: Object,
+    roles: Array,
     organisations: Object,
     organisation_id: Number,
 });
 const page = usePage();
-if (page.props.auth.permissions["superAdmin"]) {
-    options.push({
-        id: 2,
-        label: "admin",
-    });
-}
 let path = ref("");
 let filePresent = ref(false);
 let text = ref("");
 let form = useForm({
-    firstname: null,
-    surname: null,
-    email: null,
-    mobile: null,
-    roles: null,
-    organisation_id: props.organisation_id,
-    profilePicture: null,
+    firstname: props.user.firstname,
+    surname: props.user.surname,
+    email: props.user.email,
+    mobile: props.user.mobile,
+    roles: props.roles,
+    organisation_id: props.user.organisation_id,
+    profilePicture: props.user.profile_picture_path,
 });
 
 async function newFile(e) {

@@ -8,13 +8,20 @@ use LaravelIdea\Helper\App\Models\_IH_Organisation_C;
 
 trait Organisations
 {
+    /**
+     * @return Collection|array|_IH_Organisation_C
+     */
     public function getAllOrganisations(): Collection|array|_IH_Organisation_C
     {
         return Organisation::orderBy('name')->get();
     }
 
-    public function getAdminOrganisation($id)
+    /**
+     * @param $id
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAdminOrganisation($id): \Illuminate\Support\Collection
     {
-        return Organisation::findOrFail($id);
+        return collect(Organisation::findOrFail($id))->only(['id', 'name']);
     }
 }
