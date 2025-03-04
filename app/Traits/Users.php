@@ -10,9 +10,15 @@ trait Users
 {
     public function getUsersForOrg($organisation): \Illuminate\Contracts\Pagination\LengthAwarePaginator|array|_IH_User_C|LengthAwarePaginator
     {
-        return User::where('organisation_id', $organisation)
+        return User::query()
             ->with('roles')
+            ->where('organisation_id', $organisation)
             ->orderBy('surname')
-            ->paginate(5)->all();
+            ->paginate(5)
+            ->through(fn($user) => [
+                'id' => $user->id,
+                'full_name' => $user->full_name,
+                'roles' => $user->roles->pluck('role')
+            ]);
     }
 }

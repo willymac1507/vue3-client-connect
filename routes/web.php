@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
  */
 Route::middleware('auth')->group(function () {
     Route::get('/calendar/edit', [CalendarController::class, 'edit'])->name('calendar.edit');
-    Route::post('/calendar/store', [CalendarController::class, 'store'])->name('calendar.store');
+    Route::post('/calendar/{calendar:id}/store', [CalendarController::class, 'store'])->name('calendar.store');
 })->name('calendar');
 
 /**
@@ -84,7 +84,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/{user:id}/show', [UserController::class, 'show'])->name('user.show')->can('view', 'user');
     Route::get('/user/create', [UserController::class, 'create'])->name('users.create')->can('create', User::class);
     Route::post('/users', [UserController::class, 'store'])->name('users.store')->can('create', User::class);
-    Route::get('/user/{user:id}/edit', [UserController::class, 'edit'])->name('user.edit')->can('update', 'user');
+    Route::post('/user/{user:id}/update', [UserController::class, 'update'])->name('user.update')->can('update', 'user');
+    Route::get('/user/{user:id}/edit', [UserController::class, 'edit'])->name('user.edit')->can('edit', 'user');
 })->name('users');
 
 /**

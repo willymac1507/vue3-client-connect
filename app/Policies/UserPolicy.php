@@ -68,7 +68,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin')) || $user->hasRole('superUser');
+        return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin'));
     }
 
     /**
@@ -79,7 +79,7 @@ class UserPolicy
      */
     public function edit(User $user, User $model): bool
     {
-        return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin')) || $user->hasRole('superUser');
+        return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin'));
     }
 
     /**
@@ -87,7 +87,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin')) || $user->hasRole('superUser');
+        return ($user->organisation_id === $model->organisation_id && $user->hasRole('admin'));
     }
 
     public function createAny(User $user): bool

@@ -34,7 +34,7 @@ const form = useForm({
                 label="service"
                 placeholder="Pick a value"
                 track-by="service"
-            ></multiselect>
+            />
         </div>
         <PrimaryButton type="submit">Save</PrimaryButton>
     </form>

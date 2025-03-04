@@ -28,15 +28,21 @@ const props = defineProps({
 const page = usePage();
 let path = ref("");
 let filePresent = ref(false);
+if (props.user.profile_picture_path) {
+    path.value = props.user.profile_picture_path ?? null;
+    filePresent.value = true;
+}
 let text = ref("");
 let form = useForm({
+    id: props.user.id,
     firstname: props.user.firstname,
     surname: props.user.surname,
     email: props.user.email,
     mobile: props.user.mobile,
     roles: props.roles,
     organisation_id: props.user.organisation_id,
-    profilePicture: props.user.profile_picture_path,
+    profilePicture: null,
+    profile_picture_path: props.user.profile_picture_path,
 });
 
 async function newFile(e) {
@@ -47,7 +53,10 @@ async function newFile(e) {
 }
 
 function submitForm() {
-    form.post("/users", { forceFormData: true });
+    form.post(`/user/${props.user.id}/update`, {
+        _method: "PATCH",
+        forceFormData: true,
+    });
 }
 </script>
 <template>
@@ -155,7 +164,7 @@ function submitForm() {
                                 <ValidationError :error="form.errors.roles" />
                             </div>
                             <div
-                                v-if="!organisation_id"
+                                v-if="!form.organisation_id"
                                 class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6"
                             >
                                 <label
@@ -167,7 +176,6 @@ function submitForm() {
                                     <select
                                         id="organisation"
                                         v-model="form.organisation_id"
-                                        :disabled="organisation_id"
                                         class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 disabled:opacity-25"
                                         name="organisation"
                                         required

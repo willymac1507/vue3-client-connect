@@ -5,6 +5,7 @@ import PageLayout from "@/Components/PageLayout.vue";
 import { reactive, ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
+import Multiselect from "vue-multiselect";
 
 let props = defineProps({
     calendar: Object,
@@ -103,7 +104,8 @@ addTimeSlots();
 let endKey = ref(0);
 
 function setSelectedValue(event, day) {
-    startTimes[day] = event.target.selectedOptions[0].value;
+    console.log(event, day);
+    startTimes[day] = event;
 }
 
 function addTimeSlots() {
@@ -113,6 +115,12 @@ function addTimeSlots() {
             "HH:mm:ss",
         );
         timeSlots.push(slot);
+    }
+}
+
+function checkboxChange(event, day) {
+    if (!event.target.checked) {
+        alert(days[day.start]);
     }
 }
 </script>
@@ -130,7 +138,9 @@ function addTimeSlots() {
             </header>
             <form
                 class="mt-8 flex flex-col w-1/2 mr-auto gap-4"
-                @submit.prevent="form.post('/calendar/store')"
+                @submit.prevent="
+                    form.post(`/calendar/${props.calendar.id}/store`)
+                "
             >
                 <div
                     v-for="(day, dayIdx) in days"
@@ -143,26 +153,39 @@ function addTimeSlots() {
                             :id="day.day"
                             v-model="isChecked[day.day]"
                             :checked="form[day.start] !== ''"
+                            @change="checkboxChange($event, day.day)"
                         />
                     </div>
                     <div class="basis-1/4 grid items-end">
-                        <select
-                            :id="day.start"
+                        <!--                        <select-->
+                        <!--                            :id="day.start"-->
+                        <!--                            v-model="form[day.start]"-->
+                        <!--                            :disabled="!isChecked[day.day]"-->
+                        <!--                            class="disabled:opacity-25 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"-->
+                        <!--                            @change="setSelectedValue($event, day.day)"-->
+                        <!--                        >-->
+                        <!--                            <option disabled value="">Start</option>-->
+                        <!--                            <option-->
+                        <!--                                v-for="(timeSlot, timeSlotIdx) in timeSlots"-->
+                        <!--                                :key="timeSlotIdx"-->
+                        <!--                                :selected="isEqual(timeSlot, form[day.start])"-->
+                        <!--                                :value="timeSlot"-->
+                        <!--                            >-->
+                        <!--                                {{ timeSlot }}-->
+                        <!--                            </option>-->
+                        <!--                        </select>-->
+                        <multiselect
                             v-model="form[day.start]"
+                            :clear-on-select="false"
+                            :close-on-select="true"
                             :disabled="!isChecked[day.day]"
-                            class="disabled:opacity-25 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            @change="setSelectedValue($event, day.day)"
-                        >
-                            <option disabled value="">Start</option>
-                            <option
-                                v-for="(timeSlot, timeSlotIdx) in timeSlots"
-                                :key="timeSlotIdx"
-                                :selected="timeSlot === form[day.start]"
-                                :value="timeSlot"
-                            >
-                                {{ timeSlot }}
-                            </option>
-                        </select>
+                            :multiple="false"
+                            :options="timeSlots"
+                            :searchable="false"
+                            :show-labels="false"
+                            placeholder="Start"
+                            @select="setSelectedValue($event, day.day)"
+                        />
                     </div>
                     <div class="basis-1/4 grid items-end">
                         <select
@@ -194,4 +217,4 @@ function addTimeSlots() {
         <!--        </PageSection>-->
     </PageLayout>
 </template>
-<style />
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

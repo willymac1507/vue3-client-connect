@@ -4,6 +4,7 @@ import {
     BuildingOfficeIcon,
     CalendarDaysIcon,
     EnvelopeIcon,
+    PhoneIcon,
     UserCircleIcon,
 } from "@heroicons/vue/20/solid";
 import { Link, router } from "@inertiajs/vue3";
@@ -11,6 +12,7 @@ import { ref } from "vue";
 import { format } from "date-fns";
 import PageCard from "@/Components/PageCard.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
 
 const props = defineProps({
     user: Object,
@@ -31,7 +33,10 @@ function editUser() {
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <PageCard description="View user details." title="User Details">
                 <template #otherContent>
-                    <PrimaryButton @click="editUser">Edit</PrimaryButton>
+                    <div class="ml-auto space-x-4">
+                        <PrimaryButton @click="editUser">Edit</PrimaryButton>
+                        <DangerButton>Delete</DangerButton>
+                    </div>
                 </template>
                 <div class="lg:col-start-3 lg:row-end-1">
                     <h2 class="sr-only">Summary</h2>
@@ -39,7 +44,7 @@ function editUser() {
                         class="rounded-lg bg-gray-50 ring-1 shadow-xs ring-gray-900/5"
                     >
                         <dl class="flex flex-wrap">
-                            <div class="flex-auto pt-6 pl-6">
+                            <div class="basis-1/3 pt-6 pl-6">
                                 <dd
                                     class="mt-1 text-base font-semibold text-gray-900"
                                 >
@@ -51,7 +56,81 @@ function editUser() {
                                     />
                                 </dd>
                             </div>
-                            <div class="flex-none self-center px-6 pt-4">
+                            <div class="basis-1/3">
+                                <div
+                                    class="mt-6 flex w-full flex-none gap-x-4 px-6 pt-6"
+                                >
+                                    <dt class="flex-none">
+                                        <span class="sr-only">User</span>
+                                        <UserCircleIcon
+                                            aria-hidden="true"
+                                            class="h-6 w-5 text-gray-400"
+                                        />
+                                    </dt>
+                                    <dd
+                                        class="text-sm/6 font-medium text-gray-90"
+                                    >
+                                        {{ user.full_name }}
+                                    </dd>
+                                </div>
+                                <Link
+                                    v-if="user.organisation"
+                                    :href="`/organisation/${user.organisation.id}/show`"
+                                    class="mt-4 flex w-full flex-none gap-x-4 px-6"
+                                >
+                                    <dt class="flex-none">
+                                        <span class="sr-only"
+                                            >Organisation</span
+                                        >
+                                        <BuildingOfficeIcon
+                                            aria-hidden="true"
+                                            class="h-6 w-5 text-gray-400"
+                                        />
+                                    </dt>
+                                    <dd
+                                        class="text-sm/6 text-blue-600 hover:underline"
+                                    >
+                                        {{ user.organisation.name }}
+                                    </dd>
+                                </Link>
+                                <div
+                                    class="mt-4 flex w-full flex-none gap-x-4 px-6"
+                                >
+                                    <dt class="flex-none">
+                                        <span class="sr-only">Email</span>
+                                        <EnvelopeIcon
+                                            aria-hidden="true"
+                                            class="h-6 w-5 text-gray-400"
+                                        />
+                                    </dt>
+                                    <dd class="text-sm/6 text-gray-500">
+                                        <a
+                                            :href="`mailto:${user.email}`"
+                                            class="text-blue-500 hover:underline"
+                                            >{{ user.email }}</a
+                                        >
+                                    </dd>
+                                </div>
+                                <div
+                                    class="mt-4 flex w-full flex-none gap-x-4 px-6"
+                                >
+                                    <dt class="flex-none">
+                                        <span class="sr-only">Mobile</span>
+                                        <PhoneIcon
+                                            aria-hidden="true"
+                                            class="h-6 w-5 text-gray-400"
+                                        />
+                                    </dt>
+                                    <dd class="text-sm/6 text-gray-500">
+                                        <a
+                                            :href="`tel:${user.mobile}`"
+                                            class="text-blue-500 hover:underline"
+                                            >{{ user.mobile }}</a
+                                        >
+                                    </dd>
+                                </div>
+                            </div>
+                            <div class="basis-1/3 px-6 pt-4 mt-6">
                                 <dt class="sr-only">Roles</dt>
                                 <dd class="space-x-1">
                                     <div
@@ -71,56 +150,6 @@ function editUser() {
                                     >
                                         {{ role.role }}
                                     </div>
-                                </dd>
-                            </div>
-                            <div
-                                class="mt-6 flex w-full flex-none gap-x-4 border-t border-gray-900/5 px-6 pt-6"
-                            >
-                                <dt class="flex-none">
-                                    <span class="sr-only">User</span>
-                                    <UserCircleIcon
-                                        aria-hidden="true"
-                                        class="h-6 w-5 text-gray-400"
-                                    />
-                                </dt>
-                                <dd class="text-sm/6 font-medium text-gray-90">
-                                    {{ user.full_name }}
-                                </dd>
-                            </div>
-                            <Link
-                                v-if="user.organisation"
-                                :href="`/organisation/${user.organisation.id}/show`"
-                                class="mt-4 flex w-full flex-none gap-x-4 px-6"
-                            >
-                                <dt class="flex-none">
-                                    <span class="sr-only">Organisation</span>
-                                    <BuildingOfficeIcon
-                                        aria-hidden="true"
-                                        class="h-6 w-5 text-gray-400"
-                                    />
-                                </dt>
-                                <dd
-                                    class="text-sm/6 text-blue-600 hover:underline"
-                                >
-                                    {{ user.organisation.name }}
-                                </dd>
-                            </Link>
-                            <div
-                                class="mt-4 flex w-full flex-none gap-x-4 px-6"
-                            >
-                                <dt class="flex-none">
-                                    <span class="sr-only">Status</span>
-                                    <EnvelopeIcon
-                                        aria-hidden="true"
-                                        class="h-6 w-5 text-gray-400"
-                                    />
-                                </dt>
-                                <dd class="text-sm/6 text-gray-500">
-                                    <a
-                                        :href="`mailto:${user.email}`"
-                                        class="text-blue-500 hover:underline"
-                                        >{{ user.email }}</a
-                                    >
                                 </dd>
                             </div>
                         </dl>

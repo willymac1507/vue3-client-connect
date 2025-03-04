@@ -4,6 +4,7 @@ import PageCard from "@/Components/PageCard.vue";
 import { AdvancedMarker, GoogleMap } from "vue3-google-map";
 import { Link, router } from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Paginator from "@/Components/Paginator.vue";
 
 const props = defineProps({
     breadcrumbs: Object,
@@ -11,6 +12,7 @@ const props = defineProps({
     students: Object,
     roles: Object,
 });
+
 const mapsApi = import.meta.env.VITE_MAPS_API_KEY;
 const mapId = import.meta.env.VITE_MAPS_MAPID;
 const center = { lat: props.organisation.lat, lng: props.organisation.lng };
@@ -140,7 +142,7 @@ function editOrg() {
                                     role="list"
                                 >
                                     <li
-                                        v-for="student in students"
+                                        v-for="student in students.data"
                                         class="flex items-center justify-between py-4 pr-5 pl-4 text-sm/6"
                                     >
                                         <div
@@ -159,18 +161,17 @@ function editOrg() {
                                                 v-for="role in student.roles"
                                                 :class="{
                                                     'text-green-700 ring-green-600/20 bg-green-50':
-                                                        role.role === 'client',
+                                                        role === 'client',
                                                     'text-red-700 ring-red-600/20 bg-red-50':
-                                                        role.role === 'student',
+                                                        role === 'student',
                                                     'text-blue-700 ring-blue-600/20 bg-blue-50':
-                                                        role.role ===
-                                                        'superUser',
+                                                        role === 'superUser',
                                                     'text-purple-700 ring-purple-600/20 bg-purple-50':
-                                                        role.role === 'admin',
+                                                        role === 'admin',
                                                 }"
                                                 class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
                                             >
-                                                {{ role.role }}
+                                                {{ role }}
                                             </div>
                                         </div>
                                         <div class="ml-4 shrink-0">
@@ -186,6 +187,7 @@ function editOrg() {
                         </div>
                     </dl>
                 </div>
+                <Paginator :data="students"></Paginator>
             </PageCard>
         </div>
     </PageLayout>

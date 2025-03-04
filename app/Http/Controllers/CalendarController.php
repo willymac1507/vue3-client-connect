@@ -28,7 +28,7 @@ class CalendarController extends Controller
             'sunEnd' => 'required_if:sunStart, !null',
         ]);
         $attributes['user_id'] = Auth::id();
-        $calendar->update($attributes);
+        $calendar->fill($attributes)->save();
         return redirect('/')->with('success', 'Your availability has been updated.');
 
 
